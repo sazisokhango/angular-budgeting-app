@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TransactionService } from '../service/transaction.service';
+import { TransactionTable } from '../transaction-table/transaction-table.component';
 import { TransactionModel } from '../model/transaction.model';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transactions',
-  imports: [CommonModule],
+  imports: [ TransactionTable],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
@@ -16,7 +16,7 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.transactionService.getTransactions().subscribe({
-      next: (data) => this.transactions.set(data.slice(0, 5)),
+      next: (data) => this.transactions.set(data),
       error: (error) => console.log(error),
     });
   }
