@@ -1,13 +1,13 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TransactionModel } from '../model/transaction.model';
 import { TransactionService } from '../service/transaction.service';
-import { TransactionTable } from "../transaction-table/transaction-table.component";
+import { TransactionTableComponent } from "../transaction-table/transaction-table.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  imports: [TransactionTable],
+  imports: [TransactionTableComponent],
 })
 export class HomeComponent implements OnInit{
   transactionService = inject(TransactionService);

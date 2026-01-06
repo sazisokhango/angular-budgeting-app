@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TransactionService } from '../service/transaction.service';
-import { TransactionTable } from '../transaction-table/transaction-table.component';
+import { TransactionTableComponent } from '../transaction-table/transaction-table.component';
 import { TransactionModel } from '../model/transaction.model';
 
 @Component({
   selector: 'app-transactions',
-  imports: [ TransactionTable],
+  imports: [ TransactionTableComponent],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })

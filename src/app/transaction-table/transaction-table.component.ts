@@ -8,6 +8,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './transaction-table.component.html',
   styleUrl: './transaction-table.component.css',
 })
-export class TransactionTable {
+export class TransactionTableComponent {
   @Input() tableData: TransactionModel[] =  [];
 }
