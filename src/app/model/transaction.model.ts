@@ -2,8 +2,9 @@ import { BudgetModel } from "./budget.model";
 import { CategoryModel } from "./category.model";
 import { ScheduleModel } from "./schedule.model";
 
+
 export interface TransactionModel {
-      occurredAt: Date,
+      occurredAt: Date | null,
       amount: number,
       reference: string,
       description: string
