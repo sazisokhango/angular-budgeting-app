@@ -30,8 +30,13 @@ export class TransactionsComponent implements OnInit {
         console.log(error), this.toastService.showError('Error fetching the Transactions');
       },
     });
+    this.onClose();
   }
   onOpen() {
     this.isDrawerOpen.set(!this.isDrawerOpen());
+  }
+
+  onClose() {
+    this.isDrawerOpen.set(false);
   }
 }

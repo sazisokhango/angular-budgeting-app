@@ -16,7 +16,11 @@ export class HomeComponent implements OnInit{
 
   ngOnInit(): void {
     this.transactionService.getTransactions().subscribe({
-      next: (data) => this.transactions.set(data.slice(0, 5)),
+      next: (data) => {
+        this.transactions.set(data.sort((a, b) => {
+          return  new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        }).slice(0, 5))
+      },
       error: (error) => console.log(error),
     });
   }
