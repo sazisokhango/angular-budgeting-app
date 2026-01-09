@@ -19,6 +19,7 @@ export class NewTransactionComponent implements OnInit {
   transactionService = inject(TransactionService);
   toastService = inject(ToastService);
 
+  isLoading = signal(false);
   occurredAt = signal<Date>(new Date());
   amount = signal<number>(0);
   reference = signal<string>('');
@@ -59,6 +60,7 @@ export class NewTransactionComponent implements OnInit {
   }
 
   onSubmitTransaction(form: NgForm) {
+    this.isLoading.set(true)
     const category = this.categoryList().find((category) => (category.name = this.category.name));
     const budget = this.budgetList().find((budget) => (budget.name = this.budget.name));
     const transaction: TransactionRequestModel = {
@@ -74,9 +76,10 @@ export class NewTransactionComponent implements OnInit {
         this.transactionRefresher.emit(),
           this.toastService.showSuccess('Transaction Created Successfully');
         form.resetForm();
+        this.isLoading.set(false);
       },
       error: (error) => {
-        console.log(error), this.toastService.showError('Error creating Transaction');
+        console.log(error), this.toastService.showError('Error creating Transaction'), this.isLoading.set(false);
       },
     });
   }
