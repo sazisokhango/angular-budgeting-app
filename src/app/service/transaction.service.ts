@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TransactionModel } from '../model/transaction.model';
 import { Observable } from 'rxjs';
 import { CategoryModel } from '../model/category.model';
@@ -12,7 +12,7 @@ import { TransactionRequestModel } from '../model/transaction-request.model';
 export class TransactionService {
   private API_URL = 'http://localhost:8080/api/transactions';
 
-  constructor(private httpClient: HttpClient) {}
+  httpClient = inject(HttpClient);
 
   getTransactions(): Observable<TransactionModel[]> {
     return this.httpClient.get<TransactionModel[]>(this.API_URL);
