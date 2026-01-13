@@ -11,7 +11,7 @@ import { ToastService } from '../shared/toast.service';
   selector: 'app-new-transaction',
   imports: [FormsModule, CommonModule],
   templateUrl: './new-transaction.component.html',
-  styleUrl: './new-transaction.component.css',
+  styleUrls: ['./new-transaction.component.css'],
 })
 export class NewTransactionComponent implements OnInit {
   @Output() transactionRefresher = new EventEmitter<void>();
@@ -60,7 +60,7 @@ export class NewTransactionComponent implements OnInit {
   }
 
   onSubmitTransaction(form: NgForm) {
-    this.isLoading.set(true)
+    this.isLoading.set(true);
     const category = this.categoryList().find((category) => (category.name = this.category.name));
     const budget = this.budgetList().find((budget) => (budget.name = this.budget.name));
     const transaction: TransactionRequestModel = {
@@ -79,7 +79,9 @@ export class NewTransactionComponent implements OnInit {
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.log(error), this.toastService.showError('Error creating Transaction'), this.isLoading.set(false);
+        console.log(error),
+          this.toastService.showError('Error creating Transaction'),
+          this.isLoading.set(false);
       },
     });
   }
