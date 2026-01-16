@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './transaction-table.component.css',
 })
 export class TransactionTableComponent {
-  @Input() tableData: TransactionModel[] =  [];
+  @Input() tableData: TransactionModel[] = [];
 }
