@@ -1,13 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BudgetModel, CategoryModel,TransactionModel, TransactionRequestModel } from '@/app/core/models';
+import {
+  BudgetModel,
+  CategoryModel,
+  TransactionModel,
+  TransactionRequestModel,
+} from '@/app/core/models';
+import { environment } from '@/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  private API_URL = 'http://localhost:8080/api/transactions';
+  private API_URL = `${environment.apiUrl}/transactions`;
 
   private readonly httpClient = inject(HttpClient);
 
@@ -23,7 +29,7 @@ export class TransactionService {
     return this.httpClient.get<BudgetModel[]>(this.API_URL + '/budget');
   }
 
-  public createTransaction(transaction: TransactionRequestModel) : Observable<TransactionModel> {
-    return this.httpClient.post<TransactionModel>(this.API_URL,transaction);
+  public createTransaction(transaction: TransactionRequestModel): Observable<TransactionModel> {
+    return this.httpClient.post<TransactionModel>(this.API_URL, transaction);
   }
 }

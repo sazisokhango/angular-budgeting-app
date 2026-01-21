@@ -2,15 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { TransactionService } from './transaction.service';
-import { TransactionModel } from '../model/transaction.model';
-import { CategoryModel } from '../model/category.model';
-import { BudgetModel } from '../model/budget.model';
+import { BudgetModel, TransactionModel, CategoryModel } from '@/app/core/models';
+import { environment } from '@/environments/environment.development';
 
 describe('TransactionService', () => {
   let service: TransactionService;
   let httpMock: HttpTestingController;
 
-  const API_URL = 'http://localhost:8080/api/transactions';
+  const API_URL = `${environment.apiUrl}/transactions`;
 
   const mockCategory: CategoryModel = {
     id: 1,
