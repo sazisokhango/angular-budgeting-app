@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output, output } from '@angular/core';
 
 @Component({
   selector: 'app-drawer',
@@ -7,9 +7,8 @@ import { Component, EventEmitter, Input, Output, output } from '@angular/core';
   styleUrl: './drawer.component.css',
 })
 export class Drawer {
-    @Input() title = '';
-    @Output() closeDrawer = new EventEmitter();
-
+    public title = input('');
+    protected closeDrawer = output<void>()
 
     onClose() {
       this.closeDrawer.emit();

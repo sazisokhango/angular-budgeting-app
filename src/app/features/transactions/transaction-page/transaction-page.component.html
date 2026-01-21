@@ -7,7 +7,20 @@
   New Transaction
 </button>
 
-<app-transaction-table [tableData]="transactions()"></app-transaction-table>
+@if(transactions.isLoading()) {
+<p>Loading Transactions</p>
+}
+
+ @if (transactions.value()?.length) {
+    <app-transaction-table [tableData]="transactions.value()!" />
+} @else if(!transactions.isLoading()) {
+    @if(hasError()) {
+      <p>Error Fetching the Transactions</p>
+    } @else {
+      <p>No transactions Available</p>
+    }
+} 
+
 @if (isDrawerOpen()) {
 <app-drawer (closeDrawer)="onOpen()" title="New Transaction">
   <app-new-transaction (transactionRefresher)="refreshTransaction()"></app-new-transaction>

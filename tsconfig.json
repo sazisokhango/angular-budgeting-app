@@ -15,7 +15,10 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

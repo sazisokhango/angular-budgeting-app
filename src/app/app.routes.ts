@@ -1,23 +1,22 @@
 import { Routes } from '@angular/router';
-import { TransactionsComponent } from './transactions/transactions.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HomeComponent } from './home/home.component';
+
+import { HomeComponent } from './features/home';
+import { DashboardComponent } from './features/dashboard';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: DashboardComponent,
-        children: [
-            {
-                path: 'home',
-                component: HomeComponent
-            },
-            {
-                path: 'transactions',
-                component: TransactionsComponent
-            }
-        ]
-
-    },
-    
+  {
+    path: '',
+    component: DashboardComponent,
+    children: [
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'transactions',
+        loadChildren: () =>
+          import('./features/transactions/transaction.routes').then((r) => r.TRANSACTION_ROUTES),
+      },
+    ],
+  },
 ];

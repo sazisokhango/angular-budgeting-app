@@ -1,11 +1,11 @@
-import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
-import { TransactionService } from '../service/transaction.service';
+import { Component, EventEmitter, inject, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BudgetModel } from '../model/budget.model';
-import { CategoryModel } from '../model/category.model';
-import { TransactionRequestModel } from '../model/transaction-request.model';
-import { ToastService } from '../shared/toast.service';
+import { TransactionService } from '@/app/core/service';
+import { ToastService } from 'src/app/core/service/toast.service';
+import { BudgetModel, CategoryModel, TransactionRequestModel } from '@/app/core/models';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-new-transaction',
@@ -13,8 +13,8 @@ import { ToastService } from '../shared/toast.service';
   templateUrl: './new-transaction.component.html',
   styleUrls: ['./new-transaction.component.css'],
 })
-export class NewTransactionComponent implements OnInit {
-  @Output() transactionRefresher = new EventEmitter<void>();
+export class NewTransactionComponent {
+  transactionRefresher = output<void>();
 
   transactionService = inject(TransactionService);
   toastService = inject(ToastService);
@@ -36,28 +36,37 @@ export class NewTransactionComponent implements OnInit {
     name: '',
   });
 
-  budgetList = signal<BudgetModel[]>([
+  readonly budgetList = signal<BudgetModel[]>([
     { id: 0, name: '', allocation: 0, startDate: null, endDate: null },
   ]);
-  categoryList = signal<CategoryModel[]>([{ id: 0, name: '' }]);
+  readonly categoryList = signal<CategoryModel[]>([{ id: 0, name: '' }]);
 
-  ngOnInit(): void {
-    this.transactionService.getCategories().subscribe({
-      next: (categories) => {
+  private readonly categories = toSignal(
+    this.transactionService.getCategories().pipe(
+      tap((categories) => {
         this.categoryList.set([...categories]);
-      },
-      error: (error) => {
-        console.log(error), this.toastService.showError('Error fetching the Categories');
-      },
-    });
+      }),
+      catchError((error) => {
+        console.error(error);
+        this.toastService.showError('Error fetching the Categories');
+        return of([] as CategoryModel[]);
+      })
+    ),
+    { initialValue: [] }
+  );
 
-    this.transactionService.getBudget().subscribe({
-      next: (budget) => this.budgetList.set([...budget]),
-      error: (error) => {
+  private readonly budgets = toSignal(
+    this.transactionService.getBudget().pipe(
+      tap((budget) => {
+        this.budgetList.set([...budget]);
+      }),
+      catchError((error) => {
         console.log(error), this.toastService.showError('Error fetching the Budget');
-      },
-    });
-  }
+        return of([] as BudgetModel[]);
+      })
+    ),
+    { initialValue: [] }
+  );
 
   onSubmitTransaction(form: NgForm) {
     this.isLoading.set(true);
