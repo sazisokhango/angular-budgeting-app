@@ -1,27 +1,38 @@
 import { Injectable, signal } from '@angular/core';
 
 export interface Toast {
+  id: number;
   message: string;
   type: 'error' | 'success';
+  duration: number;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
-  toast = signal<Toast | null>(null);
+  public toasts = signal<Toast[]>([]);
+  private nextId = 0;
 
-  showSuccess(message: string) {
-    this.toast.set({ message, type: 'success' });
-    this.autoClear();
+  add(message: string, type: 'success' | 'error', duration: number = 3000) {
+    const toast: Toast = {
+      id: this.nextId++,
+      message,
+      type,
+      duration,
+    };
+
+    this.toasts.set([...this.toasts(), toast]);
+
+    setTimeout(() => this.remove(toast.id), duration);
   }
 
-  showError(message: string) {
-    this.toast.set({ message, type: 'error' });
-    this.autoClear();
-  }
-
-  private autoClear() {
-    setTimeout(() => this.toast.set(null), 3000);
+  remove(index: number) {
+    const current = [...this.toasts()];
+    const currentIndex = this.toasts().findIndex((t) => t.id === index);
+    if (currentIndex != -1) {
+      current.splice(currentIndex, 1);
+    }
+    this.toasts.set(current);
   }
 }

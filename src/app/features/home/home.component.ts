@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, map, NEVER } from 'rxjs';
 import { ToastService, TransactionService } from '@/app/core/service';
@@ -13,6 +13,7 @@ import { TransactionTableComponent } from '@/app/features/transactions';
 export class HomeComponent {
   protected readonly transactionService = inject(TransactionService);
   protected readonly toastService = inject(ToastService);
+  protected hasError = signal(false);
 
   protected readonly transactions = toSignal(
     this.transactionService.getTransactions().pipe(
@@ -24,7 +25,8 @@ export class HomeComponent {
           .slice(0, 5)
       ),
       catchError((error) => {
-        this.toastService.showError('Error creating Transaction');
+        this.hasError.set(true);
+        this.toastService.add('Error fetching Transaction', 'error', 3000);
         return NEVER;
       })
     ),

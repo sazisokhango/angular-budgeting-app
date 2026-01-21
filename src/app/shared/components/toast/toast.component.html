@@ -1,11 +1,15 @@
-@if(toastService.toast()) {
-<div
-  class="fixed bottom-15 right-2 z-50 px-4 py-3 rounded-lg text-white"
-  [ngClass]="{
-    'bg-green-600': toastService.toast()?.type === 'success',
-    'bg-red-600': toastService.toast()?.type === 'error'
-  }"
->
-  {{ toastService.toast()?.message }}
+<div class="fixed bottom-2 right-2 z-50">
+  @if (toastService.toasts()) { @for (toast of toastService.toasts(); track toast.id) {
+  <div
+    class="px-4 py-3 mb-2 rounded-lg text-white shadow-lg"
+    [ngClass]="{
+      'bg-green-600': toast.type === 'success',
+      'bg-red-600': toast.type === 'error',
+    }"
+  >
+    {{ toast.message }}
+    <button class="ml-2 font-bold" (click)="toastService.remove(toast.id)">×</button>
+  </div>
+  } }
 </div>
-}
+"

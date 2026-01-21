@@ -23,7 +23,7 @@ export class TransactionsComponent {
     stream: () =>
       this.transactionService.getTransactions().pipe(
         catchError((error) => {
-          console.log(error), this.toastService.showError('Error fetching the Transactions');
+          console.log(error), this.toastService.add('Error fetching the Transactions', 'error', 3000);
           this.hasError.set(true)
           return of([] as TransactionModel[]);
         })

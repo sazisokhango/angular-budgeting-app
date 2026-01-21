@@ -48,7 +48,7 @@ export class NewTransactionComponent {
       }),
       catchError((error) => {
         console.error(error);
-        this.toastService.showError('Error fetching the Categories');
+        this.toastService.add('Error fetching the Categories', 'error', 3000);
         return of([] as CategoryModel[]);
       })
     ),
@@ -61,7 +61,7 @@ export class NewTransactionComponent {
         this.budgetList.set([...budget]);
       }),
       catchError((error) => {
-        console.log(error), this.toastService.showError('Error fetching the Budget');
+        console.log(error), this.toastService.add('Error fetching the Budget', 'error', 3000);
         return of([] as BudgetModel[]);
       })
     ),
@@ -83,13 +83,13 @@ export class NewTransactionComponent {
     this.transactionService.createTransaction(transaction).subscribe({
       next: (data) => {
         this.transactionRefresher.emit(),
-          this.toastService.showSuccess('Transaction Created Successfully');
+          this.toastService.add('Transaction Created Successfully', 'success', 3000);
         form.resetForm();
         this.isLoading.set(false);
       },
       error: (error) => {
         console.log(error),
-          this.toastService.showError('Error creating Transaction'),
+          this.toastService.add('Error creating Transaction','error', 3000),
           this.isLoading.set(false);
       },
     });
