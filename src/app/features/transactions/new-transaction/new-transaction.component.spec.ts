@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewTransactionComponent } from './new-transaction.component';
-import { TransactionService } from '../service/transaction.service';
-import { ToastService } from '../shared/toast.service';
+import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
+import { TransactionService } from '../../../core/service/transaction.service';
+import { ToastService } from '../../../core/service/toast.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 // import { resolveComponentResources } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { of } from 'rxjs';
-import { BudgetModel } from '../model/budget.model';
+import { BudgetModel } from '../../../core/model/budget.model';
 
 describe('NewTransactionComponent', () => {
   let fixture: ComponentFixture<NewTransactionComponent>;
