@@ -4,6 +4,6 @@ export const TRANSACTION_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./transaction-page/transaction-page.component').then((m) => m.TransactionsComponent),
+      import('./pages/transaction-page/transaction-page.component').then((m) => m.TransactionsComponent),
   },
 ];

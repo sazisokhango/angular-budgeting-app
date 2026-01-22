@@ -3,8 +3,9 @@
 >
   <div class="flex items-center gap-2">
     <button class="md:hidden" (click)="isSidebarOpen = !isSidebarOpen">☰</button>
-
-    <img src="budget-buddy.png" class="h-20 w-auto ">
+    <a routerLink="home">
+      <img src="budget-buddy.png" class="h-20 w-auto" />
+    </a>
   </div>
 
   <a routerLink="login">Login</a>
@@ -12,25 +13,18 @@
 
 <div class="flex h-[calc(100vh-50px)] mt-[72px]">
   <aside
-  class="
-    fixed md:static
-    top-[50px] left-0
-    w-[200px] h-full
-    bg-[#f2f2f2] p-5
-    transform transition-transform duration-200
-    -translate-x-full md:translate-x-0
-  "
-  [class.translate-x-0]="isSidebarOpen"
->
+    class="fixed md:static top-[50px] left-0 w-[200px] h-full bg-[#f2f2f2] p-5 transform transition-transform duration-200 -translate-x-full md:translate-x-0"
+    [class.translate-x-0]="isSidebarOpen"
+  >
     <ul class="m-0">
-      <li class="pb-6"><a routerLink="home" (click)="isSidebarOpen=false">Home</a></li>
-      <li><a routerLink="transactions" (click)="isSidebarOpen=false">Transactions</a></li>
+      <li class="pb-6"><a routerLink="home" (click)="isSidebarOpen = false">Home</a></li>
+      <li><a routerLink="transactions" (click)="isSidebarOpen = false">Transactions</a></li>
     </ul>
   </aside>
 
-  <main class="flex-1 p-5 bg-white box-border overflow-y-auto ">
+  <main class="flex-1 p-5 bg-white box-border overflow-y-auto">
     <router-outlet></router-outlet>
   </main>
   <app-footer></app-footer>
-<app-toast></app-toast>
+  <app-toast></app-toast>
 </div>

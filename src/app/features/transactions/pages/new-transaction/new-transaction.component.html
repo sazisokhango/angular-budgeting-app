@@ -52,8 +52,8 @@
       id=""
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
-      @for (item of categoryList(); track $index) {
-      <option>{{ item.name }}</option>
+      @for (item of store.categories.value(); track item.id) {
+      <option [value]="item.id">{{ item.name }}</option>
       }
     </select>
   </div>
@@ -66,9 +66,9 @@
       id=""
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
-      @for (item of budgetList(); track $index) {
-      <option>{{ item.name }}</option>
-      }u
+      @for (item of store.budgets.value() ; track item.id) {
+      <option [value]="item.id">{{ item.name }}</option>
+      }
     </select>
   </div>
 

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { HomeComponent } from './features/home';
 import { DashboardComponent } from './features/dashboard';
 
 export const routes: Routes = [
@@ -10,12 +9,13 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
-        component: HomeComponent,
+        loadComponent: () =>
+          import('@/app/features/home/home.component').then((r) => r.HomeComponent),
       },
       {
         path: 'transactions',
         loadChildren: () =>
-          import('./features/transactions/transaction.routes').then((r) => r.TRANSACTION_ROUTES),
+          import('@/app/features/transactions/transaction.routes').then((r) => r.TRANSACTION_ROUTES),
       },
     ],
   },

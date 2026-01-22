@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
-import { TransactionService } from '../../../core/service/transaction.service';
-import { ToastService } from '../../../core/service/toast.service';
+import { NewTransactionComponent } from './new-transaction.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 // import { resolveComponentResources } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { of } from 'rxjs';
-import { BudgetModel } from '../../../core/model/budget.model';
+import { ToastService, TransactionService } from '@/app/core/service';
+import { BudgetModel } from '@/app/core/models';
 
 describe('NewTransactionComponent', () => {
   let fixture: ComponentFixture<NewTransactionComponent>;
@@ -48,8 +47,8 @@ describe('NewTransactionComponent', () => {
     const category = { id: 1, name: 'Subscriptions' };
     const budget = { id: 1, name: 'Entertainment' } as BudgetModel;
 
-    component.categoryList.set([category]);
-    component.budgetList.set([budget]);
+    // component.categoryList.set([category]);
+    // component.budgetList.set([budget]);
 
     component.category.set(category);
     component.budget.set(budget);
