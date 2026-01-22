@@ -1,8 +1,9 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BudgetModel, CategoryModel, TransactionRequestModel } from '@/app/core/models';
-import { TransactionStore } from '@/app/core/store/transaction.store';
+import { TransactionRequestModel } from '@/app/core/models';
+import { TransactionStore } from '../../../../core/store/transaction.store';
+import { ToastService } from '../../../../core/service';
 
 @Component({
   selector: 'app-new-transaction',
@@ -14,6 +15,7 @@ export class NewTransactionComponent {
   transactionRefresher = output<void>();
 
   store = inject(TransactionStore);
+  toast = inject(ToastService);
 
   hasError = signal(false);
   isLoading = signal(false);
@@ -46,11 +48,12 @@ export class NewTransactionComponent {
         form.resetForm();
         this.isLoading.set(true);
         this.hasError.set(false);
+        this.toast.add('Transaction created Successfully', 'success', 4000);
       },
       error: () => {
         this.isLoading.set(false);
         this.hasError.set(true);
-      }
+      },
     });
   }
 }
