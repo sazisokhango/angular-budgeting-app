@@ -9,7 +9,7 @@
     New Transaction
   </button>
     <app-transaction-table [tableData]="store.transactions.value()!" />
-} @else if(store.transactions.isLoading()) {
+} @else {
     <p>Transactions are not available</p>
 } 
 @if (isDrawerOpen()) {

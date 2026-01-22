@@ -1,62 +1,54 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NewTransactionComponent } from './new-transaction.component';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-// import { resolveComponentResources } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { of } from 'rxjs';
-import { ToastService, TransactionService } from '@/app/core/service';
-import { BudgetModel } from '@/app/core/models';
+import { TransactionStore } from '../../../../core/store/transaction.store';
+import { ToastService } from '../../../../core/service';
 
 describe('NewTransactionComponent', () => {
   let fixture: ComponentFixture<NewTransactionComponent>;
   let component: NewTransactionComponent;
-  let transactionService: any;
-  let toastService: any;
+  let store: any;
+  let toast: any;
 
   beforeEach(async () => {
+    store = {
+      categories: {
+        value: vi.fn().mockReturnValue([{ id: 1, name: 'Subscriptions' }]),
+      },
+      budgets: {
+        value: vi.fn().mockReturnValue([{ id: 1, name: 'Entertainment' }]),
+      },
+      transactions: {
+        reload: vi.fn(),
+      },
+      createTransaction: vi.fn().mockReturnValue(of({})),
+    };
+
+    toast = {
+      add: vi.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [FormsModule, CommonModule, NewTransactionComponent],
       providers: [
-        {
-          provide: TransactionService,
-          useValue: {
-            createTransaction: vi.fn().mockReturnValue(of({})),
-            getCategories: vi.fn().mockReturnValue(of([])),
-            getBudget: vi.fn().mockReturnValue(of([])),
-          },
-        },
-        {
-          provide: ToastService,
-          useValue: {
-            showSuccess: vi.fn(),
-            showError: vi.fn(),
-          },
-        },
+        { provide: TransactionStore, useValue: store },
+        { provide: ToastService, useValue: toast },
       ],
     }).compileComponents();
-
-    // await resolveComponentResources();
 
     fixture = TestBed.createComponent(NewTransactionComponent);
     component = fixture.componentInstance;
 
-    transactionService = TestBed.inject(TransactionService);
-    toastService = TestBed.inject(ToastService);
-
-    const category = { id: 1, name: 'Subscriptions' };
-    const budget = { id: 1, name: 'Entertainment' } as BudgetModel;
-
-    // component.categoryList.set([category]);
-    // component.budgetList.set([budget]);
-
-    component.category.set(category);
-    component.budget.set(budget);
+    component.category.set(1);
+    component.budget.set(1);
 
     fixture.detectChanges();
   });
 
-  it('should POST transaction, show success toast and refresh dashboard', () => {
+  it('should POST transaction, show success toast, refresh and emit event', () => {
     const refreshSpy = vi.spyOn(component.transactionRefresher, 'emit');
 
     component.amount.set(250);
@@ -66,15 +58,18 @@ describe('NewTransactionComponent', () => {
 
     const form = {
       resetForm: vi.fn(),
-    } as unknown as NgForm;
+    } as any;
 
     component.onSubmitTransaction(form);
 
-    expect(transactionService.createTransaction).toHaveBeenCalled();
-    expect(toastService.showSuccess).toHaveBeenCalledWith(
-      'Transaction Created Successfully'
-    );
+    expect(store.createTransaction).toHaveBeenCalled();
+    expect(store.transactions.reload).toHaveBeenCalled();
     expect(refreshSpy).toHaveBeenCalled();
-    expect(component.isLoading()).toBe(false);
+    expect(toast.add).toHaveBeenCalledWith(
+      'Transaction created Successfully',
+      'success',
+      4000
+    );
+    expect(component.isLoading()).toBe(true);
   });
 });
