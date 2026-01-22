@@ -13,23 +13,26 @@ import { environment } from '@/environments/environment.development';
   providedIn: 'root',
 })
 export class TransactionService {
-  private API_URL = `${environment.apiUrl}/transactions`;
+  private readonly baseUrl = `${environment.apiUrl}/transactions`;
+  private readonly categoryUrl = `${this.baseUrl}/category`;
+  private readonly budgetUrl = `${this.baseUrl}/budget`;
+
 
   private readonly httpClient = inject(HttpClient);
 
   public getTransactions(): Observable<TransactionModel[]> {
-    return this.httpClient.get<TransactionModel[]>(this.API_URL);
+    return this.httpClient.get<TransactionModel[]>(this.baseUrl);
   }
 
   public getCategories(): Observable<CategoryModel[]> {
-    return this.httpClient.get<CategoryModel[]>(this.API_URL + '/category');
+    return this.httpClient.get<CategoryModel[]>(this.categoryUrl);
   }
 
-  public getBudget(): Observable<BudgetModel[]> {
-    return this.httpClient.get<BudgetModel[]>(this.API_URL + '/budget');
+  public getBudgets(): Observable<BudgetModel[]> {
+    return this.httpClient.get<BudgetModel[]>(this.budgetUrl);
   }
 
   public createTransaction(transaction: TransactionRequestModel): Observable<TransactionModel> {
-    return this.httpClient.post<TransactionModel>(this.API_URL, transaction);
+    return this.httpClient.post<TransactionModel>(this.baseUrl, transaction);
   }
 }
