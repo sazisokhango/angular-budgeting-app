@@ -9,7 +9,7 @@ import { catchError, EMPTY, of } from 'rxjs';
 })
 export class TransactionStore {
   private readonly service = inject(TransactionService);
-  toastService = inject(ToastService);
+  private readonly toastService = inject(ToastService);
 
   readonly transactions = rxResource({
     stream: () =>
