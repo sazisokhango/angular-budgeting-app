@@ -16,7 +16,7 @@ export class HomeComponent {
     () => this.store.transactions.value() ?? []
   );
 
-  get sortedList() {
+  protected get sortedList() {
     return this.transactionList()
       .sort((a, b) => {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();

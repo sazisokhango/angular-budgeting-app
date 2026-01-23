@@ -27,7 +27,7 @@ export class ToastService {
     setTimeout(() => this.remove(toast.id), duration);
   }
 
-  private remove(index: number) {
+  public remove(index: number) {
     const current = [...this.toasts()];
     const currentIndex = this.toasts().findIndex((t) => t.id === index);
     if (currentIndex != -1) {

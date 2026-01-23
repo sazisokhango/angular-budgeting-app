@@ -9,5 +9,5 @@ import { TransactionModel } from '@/app/core/models';
   imports: [TransactionRowComponent],
 })
 export class TransactionTableComponent {
-  public tableData = input.required<TransactionModel[]>();
+  public readonly tableData = input.required<TransactionModel[]>();
 }

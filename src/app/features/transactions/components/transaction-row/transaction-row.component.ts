@@ -10,5 +10,5 @@ import { TransactionModel } from '@/app/core/models';
   styleUrl: './transaction-row.component.css',
 })
 export class TransactionRowComponent {
-  public transaction = input.required<TransactionModel>();
+  public readonly transaction = input.required<TransactionModel>();
 }

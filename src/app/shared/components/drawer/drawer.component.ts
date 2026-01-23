@@ -7,8 +7,8 @@ import { Component, EventEmitter, input, Input, Output, output } from '@angular/
   styleUrl: './drawer.component.css',
 })
 export class Drawer {
-    public title = input('');
-    protected closeDrawer = output<void>()
+    public readonly title = input('');
+    protected readonly closeDrawer = output<void>()
 
     onClose() {
       this.closeDrawer.emit();

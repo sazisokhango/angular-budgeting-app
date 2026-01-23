@@ -10,7 +10,7 @@ import { TransactionStore } from '@/app/core/store/transaction.store';
   imports: [TransactionTableComponent, NewTransactionComponent, Drawer],
 })
 export class TransactionsComponent {
-   readonly store = inject(TransactionStore);
+  protected readonly store = inject(TransactionStore);
 
   protected isDrawerOpen = signal(false);
 

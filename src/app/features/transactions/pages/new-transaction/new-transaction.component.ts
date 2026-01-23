@@ -11,7 +11,6 @@ import { ToastService } from '../../../../core/service';
   styleUrls: ['./new-transaction.component.css'],
 })
 export class NewTransactionComponent {
-  //Todo ReadOnly and protected
   protected readonly transactionRefresher = output<void>();
 
   protected readonly store = inject(TransactionStore);
