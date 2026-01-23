@@ -30,6 +30,7 @@ export class TransactionStore {
           return EMPTY;
         })
       ),
+      defaultValue: []
   });
 
   readonly budgets = rxResource({
@@ -40,6 +41,7 @@ export class TransactionStore {
           return EMPTY;
         })
       ),
+      defaultValue: []
   });
 
   createTransaction(request: TransactionRequestModel) {

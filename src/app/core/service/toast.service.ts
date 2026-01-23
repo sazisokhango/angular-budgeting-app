@@ -11,10 +11,10 @@ export interface Toast {
   providedIn: 'root',
 })
 export class ToastService {
-  public toasts = signal<Toast[]>([]);
+  public readonly toasts = signal<Toast[]>([]);
   private nextId = 0;
 
-  add(message: string, type: 'success' | 'error', duration: number = 3000) {
+  public add(message: string, type: 'success' | 'error', duration: number = 3000) {
     const toast: Toast = {
       id: this.nextId++,
       message,
@@ -22,12 +22,12 @@ export class ToastService {
       duration,
     };
 
-    this.toasts.set([...this.toasts(), toast]);
+    this.toasts.update((toasts) => [...toasts, toast] )
 
     setTimeout(() => this.remove(toast.id), duration);
   }
 
-  remove(index: number) {
+  private remove(index: number) {
     const current = [...this.toasts()];
     const currentIndex = this.toasts().findIndex((t) => t.id === index);
     if (currentIndex != -1) {
