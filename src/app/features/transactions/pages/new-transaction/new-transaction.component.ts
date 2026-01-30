@@ -3,10 +3,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { TransactionRequestModel } from '@/app/core/models';
 import { TransactionStore } from '../../../../core/store/transaction.store';
 import { ToastService } from '../../../../core/service';
+import { ButtonComponent } from "@/app/shared/components/button/button.component";
 
 @Component({
   selector: 'app-new-transaction',
-  imports: [FormsModule],
+  imports: [FormsModule, ButtonComponent],
   templateUrl: './new-transaction.component.html',
   styleUrls: ['./new-transaction.component.css'],
 })
