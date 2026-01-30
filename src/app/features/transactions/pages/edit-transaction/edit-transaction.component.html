@@ -1,0 +1,77 @@
+<form class="grid grid-cols-1 gap-4" #form="ngForm" (ngSubmit)="editTransaction(form)">
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-700">Occurred At</label>
+      <input
+        name="occurredAt"
+        [(ngModel)]="occurredAt"
+        type="datetime-local"
+        required
+        class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+  
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-700">Amount</label>
+      <input
+        name="amount"
+        [(ngModel)]="amount"
+        type="number"
+        min="1"
+        required
+        class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+  
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-700">Reference</label>
+      <input
+        name="reference"
+        [(ngModel)]="reference"
+        type="text"
+        required
+        class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+  
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-700">Description</label>
+      <input
+        name="description"
+        [(ngModel)]="description"
+        type="text"
+        required
+        class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+  
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-700">Category</label>
+      <select
+        name="category"
+        [(ngModel)]="category"
+        id=""
+        class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        @for (item of store.categories.value(); track item.id) {
+        <option [value]="item.id">{{ item.name }}</option>
+        }
+      </select>
+    </div>
+  
+    <div class="flex flex-col gap-1">
+      <label class="text-sm font-medium text-gray-700">Budget</label>
+      <select
+        name="budget"
+        [(ngModel)]="budget"
+        id=""
+        class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        @for (item of store.budgets.value() ; track item.id) {
+        <option [value]="item.id">{{ item.name }}</option>
+        }
+      </select>
+    </div>
+  
+    <app-button [isDisabled]="form.invalid!" [isLoading]="isLoading()" label='Edit' type='submit' ></app-button>
+  </form>
+  
