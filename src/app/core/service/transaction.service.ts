@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -17,7 +17,6 @@ export class TransactionService {
   private readonly categoryUrl = `${this.baseUrl}/category`;
   private readonly budgetUrl = `${this.baseUrl}/budget`;
 
-
   private readonly httpClient = inject(HttpClient);
 
   public getTransactions(): Observable<TransactionModel[]> {
@@ -34,5 +33,9 @@ export class TransactionService {
 
   public createTransaction(transaction: TransactionRequestModel): Observable<TransactionModel> {
     return this.httpClient.post<TransactionModel>(this.baseUrl, transaction);
+  }
+
+  public updateTransaction(transaction: TransactionModel): Observable<TransactionModel> {
+    return this.httpClient.put<TransactionModel>(`${this.baseUrl}?transactionId=${transaction.transactionId}`, transaction);
   }
 }
