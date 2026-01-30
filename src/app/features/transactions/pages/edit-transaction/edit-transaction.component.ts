@@ -1,21 +1,21 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { TransactionModel } from '@/app/core/models';
+import { TransactionStore } from '@/app/core/store/transaction.store';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { TransactionRequestModel } from '@/app/core/models';
-import { TransactionStore } from '../../../../core/store/transaction.store';
-import { ToastService } from '../../../../core/service';
-import { ButtonComponent } from "@/app/shared/components/button/button.component";
+import { ButtonComponent } from '@/app/shared/components/button/button.component';
+import { ToastService } from '@/app/core/service';
 
 @Component({
-  selector: 'app-new-transaction',
+  selector: 'app-edit-transaction',
   imports: [FormsModule, ButtonComponent],
-  templateUrl: './new-transaction.component.html',
-  styleUrls: ['./new-transaction.component.css'],
+  templateUrl: './edit-transaction.component.html',
+  styleUrl: './edit-transaction.css',
 })
-export class NewTransactionComponent {
+export class EditTransactionCompoent {
   protected readonly transactionRefresher = output<void>();
-
   protected readonly store = inject(TransactionStore);
-  private readonly toast = inject(ToastService);
+  protected readonly toast = inject(ToastService)
+  public readonly transaction = input.required<TransactionModel | null>();
 
   protected readonly hasError = signal(false);
   protected readonly isLoading = signal(false);
@@ -26,7 +26,21 @@ export class NewTransactionComponent {
   protected readonly budget = signal<number | null>(null);
   protected readonly category = signal<number | null>(null);
 
-  onSubmitTransaction(form: NgForm) {
+  constructor() {
+    effect(() => {
+      const tx = this.transaction();
+      if (tx) {
+        this.amount.set(tx.amount);
+        this.occurredAt.set(tx.occurredAt);
+        this.reference.set(tx.reference);
+        this.description.set(tx.description);
+        this.budget.set(tx.budget.id);
+        this.category.set(tx.category.id);
+      }
+    });
+  }
+
+  editTransaction(form: NgForm) {
     this.isLoading.set(true);
     const category = this.store.categories.value().find((c) => {
       return c.id === Number(this.category());
@@ -40,28 +54,36 @@ export class NewTransactionComponent {
       throw new Error('Category or Budget not found');
     }
 
-    const transaction: TransactionRequestModel = {
+    const tx = this.transaction()!;
+
+    const transaction: TransactionModel = {
+      transactionId: tx.transactionId,
       amount: this.amount(),
       reference: this.reference(),
       occurredAt: this.occurredAt(),
       description: this.description(),
       category,
       budget,
+      createdAt: tx.createdAt,
+      createdBy: tx.createdBy,
+      updatedAt: tx.updatedAt,
+      updatedBy: tx.updatedBy,
     };
 
-    this.store.createTransaction(transaction).subscribe({
+    this.store.editTransaction(transaction).subscribe({
       next: () => {
         this.store.transactions.reload();
         this.transactionRefresher.emit();
         form.resetForm();
         this.isLoading.set(true);
         this.hasError.set(false);
-        this.toast.add('Transaction created Successfully', 'success', 4000);
+        this.toast.add('Transaction edited Successfully', 'success', 4000);
       },
       error: () => {
         this.isLoading.set(false);
         this.hasError.set(true);
       },
-    });
+    })
   }
+  
 }

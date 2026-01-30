@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { ToastService, TransactionService } from '../service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { TransactionRequestModel } from '../models';
-import { catchError, EMPTY, of } from 'rxjs';
+import { TransactionModel, TransactionRequestModel } from '../models';
+import { catchError, EMPTY, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class TransactionStore {
           return EMPTY;
         })
       ),
-      defaultValue: []
+    defaultValue: [],
   });
 
   readonly budgets = rxResource({
@@ -41,14 +41,23 @@ export class TransactionStore {
           return EMPTY;
         })
       ),
-      defaultValue: []
+    defaultValue: [],
   });
 
-  createTransaction(request: TransactionRequestModel) {
+  createTransaction(request: Readonly<TransactionRequestModel>) {
     return this.service.createTransaction(request).pipe(
       catchError((error) => {
         this.toastService.add('Error creating Transaction', 'error', 3000);
         return EMPTY;
+      })
+    );
+  }
+
+  editTransaction(body: Readonly<TransactionModel>) {
+    return this.service.updateTransaction(body).pipe(
+      catchError((error) => {
+        this.toastService.add('Error updating the Transaction', 'error', 3000);
+        return throwError(()=> error)
       })
     );
   }
