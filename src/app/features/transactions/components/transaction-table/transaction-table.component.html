@@ -8,12 +8,13 @@
         <th class="px-4 py-3">Description</th>
         <th class="px-4 py-3">Amount</th>
         <th class="px-4 py-3">Category</th>
+        <th class="px-4 py-3">Action</th>
       </tr>
     </thead>
 
     <tbody class="text-sm text-gray-700 dark:text-gray-300">
       @for (trans of tableData(); track $index) {
-        <tr appTransactionRow [transaction]="trans"></tr>
+        <tr appTransactionRow (editTransaction)="requestTransactionEdit($event)" [transaction]="trans"></tr>
       }
     </tbody>
   </table>

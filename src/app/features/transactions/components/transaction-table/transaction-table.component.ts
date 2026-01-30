@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { TransactionRowComponent } from '../transaction-row/transaction-row.component';
 import { TransactionModel } from '@/app/core/models';
 
@@ -10,4 +10,9 @@ import { TransactionModel } from '@/app/core/models';
 })
 export class TransactionTableComponent {
   public readonly tableData = input.required<TransactionModel[]>();
+  protected readonly editTranactionRequested = output<TransactionModel>();
+
+  public requestTransactionEdit(transaction: TransactionModel) {
+    this.editTranactionRequested.emit(transaction);
+  }
 }
