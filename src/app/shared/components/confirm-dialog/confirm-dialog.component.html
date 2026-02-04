@@ -1,0 +1,23 @@
+<div
+  class="border-gray-300 bg-white-400 z-50 fixed inset-0 flex bg-black/40 items-center justify-center"
+>
+  <div class="w-80 rounded-md bg-white border border-gray-200 p-10">
+    <p class="mb-8 text-gray-700 text-sm">{{ label() }}</p>
+    <div class="flex justify-end p-[15px]">
+      <app-button
+        (action)="onYes()"
+        [buttonType]="'danger'"
+        [isDisabled]="false"
+        [isLoading]="isProcessing()"
+        label="Yes"
+      ></app-button>
+      <app-button
+        (action)="onNo()"
+        [buttonType]="'info'"
+        [isDisabled]="false"
+        [isLoading]="isProcessing()"
+        label="No"
+      ></app-button>
+    </div>
+  </div>
+</div>
