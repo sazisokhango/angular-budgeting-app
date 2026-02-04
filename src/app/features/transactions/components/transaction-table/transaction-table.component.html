@@ -14,7 +14,7 @@
 
     <tbody class="text-sm text-gray-700 dark:text-gray-300">
       @for (trans of tableData(); track $index) {
-        <tr appTransactionRow (editTransaction)="requestTransactionEdit($event)" [transaction]="trans"></tr>
+        <tr appTransactionRow (editTransaction)="requestTransactionEdit($event)" (deleteTransaction)="requestTransactionDelete($event)" [transaction]="trans"></tr>
       }
     </tbody>
   </table>
