@@ -10,6 +10,7 @@
 </button>
 <app-transaction-table
   (editTranactionRequested)="requestTractionEditPage($event)"
+  (deleteTransactionRequested)="requestTransactionDelete($event)"
   [tableData]="store.transactions.value()!"
 />
 } @else {
@@ -25,4 +26,7 @@
     (transactionRefresher)="refreshTransaction()"
   ></app-edit-transaction>
 </app-drawer>
+}
+@if(showConfirmation()) {
+  <app-confirm-dialog label="Are you sure you want to delete?" (confirmed)="checkConfirmation($event)"></app-confirm-dialog>
 }
