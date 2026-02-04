@@ -36,6 +36,13 @@ export class TransactionService {
   }
 
   public updateTransaction(transaction: TransactionModel): Observable<TransactionModel> {
-    return this.httpClient.put<TransactionModel>(`${this.baseUrl}?transactionId=${transaction.transactionId}`, transaction);
+    return this.httpClient.put<TransactionModel>(
+      `${this.baseUrl}?transactionId=${transaction.transactionId}`,
+      transaction
+    );
+  }
+
+  public deleteTransaction(transactionId: string): Observable<void> {
+    return this.httpClient.delete<void>(this.baseUrl, { params: { transactionId } });
   }
 }
