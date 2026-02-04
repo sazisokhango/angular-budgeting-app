@@ -11,8 +11,13 @@ import { TransactionModel } from '@/app/core/models';
 export class TransactionTableComponent {
   public readonly tableData = input.required<TransactionModel[]>();
   protected readonly editTranactionRequested = output<TransactionModel>();
+  protected readonly deleteTransactionRequested = output<TransactionModel>();
 
   public requestTransactionEdit(transaction: TransactionModel) {
     this.editTranactionRequested.emit(transaction);
+  }
+
+  public requestTransactionDelete(transaction: TransactionModel) {
+    this.deleteTransactionRequested.emit(transaction)
   }
 }

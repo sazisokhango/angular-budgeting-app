@@ -61,4 +61,13 @@ export class TransactionStore {
       })
     );
   }
+
+  deleteTransaction(id: Readonly<string>) {
+    return this.service.deleteTransaction(id).pipe(
+      catchError(error => {
+        this.toastService.add('Error deleting the Transaction', 'error', 3000);
+        return throwError(() => error)
+      })
+    )
+  }
 }

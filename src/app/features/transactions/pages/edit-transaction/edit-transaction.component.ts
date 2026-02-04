@@ -14,11 +14,12 @@ import { ToastService } from '@/app/core/service';
 export class EditTransactionCompoent {
   protected readonly transactionRefresher = output<void>();
   protected readonly store = inject(TransactionStore);
-  protected readonly toast = inject(ToastService)
+  protected readonly toast = inject(ToastService);
   public readonly transaction = input.required<TransactionModel | null>();
 
   protected readonly hasError = signal(false);
   protected readonly isLoading = signal(false);
+
   protected readonly occurredAt = signal<Date>(new Date());
   protected readonly amount = signal<number>(0);
   protected readonly reference = signal<string>('');
@@ -83,7 +84,6 @@ export class EditTransactionCompoent {
         this.isLoading.set(false);
         this.hasError.set(true);
       },
-    })
+    });
   }
-  
 }

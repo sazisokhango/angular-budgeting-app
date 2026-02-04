@@ -71,7 +71,8 @@
         }
       </select>
     </div>
-  
-    <app-button [isDisabled]="form.invalid!" [isLoading]="isLoading()" label='Edit' type='submit' ></app-button>
+    <div class="flex gap-3">
+      <app-button [isDisabled]="form.invalid!" [isLoading]="isLoading()" label='Edit' type='submit' buttonType="success" ></app-button>
+    </div>
+    
   </form>
-  
