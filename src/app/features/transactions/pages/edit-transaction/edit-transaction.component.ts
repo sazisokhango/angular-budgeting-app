@@ -1,9 +1,9 @@
 import { TransactionModel } from '@/app/core/models';
-import { TransactionStore } from '@/app/core/store/transaction.store';
+import { TransactionStore } from '../../../../core/store/transaction.store';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ButtonComponent } from '@/app/shared/components/button/button.component';
-import { ToastService } from '@/app/core/service';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { ToastService } from '../../../../core/service/toast.service';
 
 @Component({
   selector: 'app-edit-transaction',
@@ -76,7 +76,6 @@ export class EditTransactionCompoent {
         this.store.transactions.reload();
         this.transactionRefresher.emit();
         form.resetForm();
-        this.isLoading.set(true);
         this.hasError.set(false);
         this.toast.add('Transaction edited Successfully', 'success', 4000);
       },
