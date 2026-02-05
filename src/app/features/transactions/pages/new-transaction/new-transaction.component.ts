@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { TransactionRequestModel } from '@/app/core/models';
 import { TransactionStore } from '../../../../core/store/transaction.store';
 import { ToastService } from '../../../../core/service';
-import { ButtonComponent } from "@/app/shared/components/button/button.component";
+import { ButtonComponent } from "../../../../shared";
 
 @Component({
   selector: 'app-new-transaction',
@@ -54,7 +54,6 @@ export class NewTransactionComponent {
         this.store.transactions.reload();
         this.transactionRefresher.emit();
         form.resetForm();
-        this.isLoading.set(true);
         this.hasError.set(false);
         this.toast.add('Transaction created Successfully', 'success', 4000);
       },

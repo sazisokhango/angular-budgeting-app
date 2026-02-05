@@ -17,12 +17,13 @@ export class ButtonComponent {
 
   protected readonly buttonClass = computed(() => ({
     'bg-red-500 hover:bg-red-700': this.buttonType() === 'danger',
-    'bg-sky-600': this.buttonType() === 'success',
-    'bg-white-600': this.buttonType() === 'info',
+    'bg-sky-500 hover:bg-sky-600': this.buttonType() === 'success',
+    'bg-slate-200 hover:bg-slate-300': this.buttonType() === 'info',
   }));
 
   actionMethod() {
-    if(this.type() !== 'submit'){
+    if (this.isLoading()) return;
+    if (this.type() !== 'submit') {
       this.action.emit();
     }
   }
