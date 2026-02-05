@@ -9,7 +9,7 @@
   New Transaction
 </button>
 <app-transaction-table
-  (editTranactionRequested)="requestTractionEditPage($event)"
+  (editTranactionRequested)="requestTransactionEdit($event)"
   (deleteTransactionRequested)="requestTransactionDelete($event)"
   [tableData]="store.transactions.value()!"
 />

@@ -1,15 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
-import { NewTransactionComponent, TransactionTableComponent } from '@/app/features/transactions';
-import { Drawer, ConfirmDialogComponent } from '@/app/shared';
-import { TransactionStore } from '@/app/core/store/transaction.store';
-import { TransactionModel } from '@/app/core/models';
+import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
+import { TransactionTableComponent } from '../../components/transaction-table/transaction-table.component';
+import { Drawer, ConfirmDialogComponent } from '../../../../shared';
+import { TransactionStore } from '../../../../core/store/transaction.store';
+import { TransactionModel } from '../../../../core/models';
 import { EditTransactionCompoent } from '../edit-transaction/edit-transaction.component';
-import { ToastService } from '@/app/core/service';
+import { ToastService } from  '../../../../core/service/toast.service';
 
 @Component({
   selector: 'app-transactions-page',
   templateUrl: './transaction-page.component.html',
-  styleUrl: './transaction-page.component.css',
+  standalone: true,
   imports: [
     TransactionTableComponent,
     NewTransactionComponent,
@@ -52,7 +53,7 @@ export class TransactionsComponent {
     this.showConfirmation.update((t) => !t);
   }
 
-  requestTractionEditPage(transaction: TransactionModel) {
+  requestTransactionEdit(transaction: TransactionModel) {
     this.selectedTransaction.set(transaction);
     this.onOpen();
     this.drawerMode = 'edit-mode';
@@ -65,26 +66,29 @@ export class TransactionsComponent {
 
   checkConfirmation(isToBeDeleted: boolean) {
     this.isDeleteConfirmed.set(isToBeDeleted);
-    this.showConfirmation.update((t) => (t = false));
+    this.showConfirmation.set(false);
 
     if (isToBeDeleted) {
       // this.isLoading.set(true);
-      const id = this.selectedTransaction()?.transactionId!;
-      if (id !== null) {
-        this.store.deleteTransaction(id).subscribe({
-          next: () => {
-            this.store.transactions.reload();
-            this.refreshTransaction();
-            // this.isLoading.set(true);
-            // this.hasError.set(false);
-            this.toast.add('The Transaction was successfully deleted', 'success', 4000);
-          },
-          error: () => {
-            // this.isLoading.set(false);
-            // this.hasError.set(true);
-          },
-        });
+      const tx = this.selectedTransaction();
+
+      if (!tx) {
+        return;
       }
+
+      this.store.deleteTransaction(tx.transactionId).subscribe({
+        next: () => {
+          this.store.transactions.reload();
+          this.refreshTransaction();
+          // this.isLoading.set(true);
+          // this.hasError.set(false);
+          this.toast.add('The Transaction was successfully deleted', 'success', 4000);
+        },
+        error: () => {
+          // this.isLoading.set(false);
+          // this.hasError.set(true);
+        },
+      });
     }
   }
 }
