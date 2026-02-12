@@ -1,17 +1,17 @@
 import { TransactionModel } from '@/app/core/models';
-import { TransactionStore } from '../../../../core/store/transaction.store';
+import { ToastService } from '@/app/core/service';
+import { TransactionStore } from '@/app/core/store/transaction.store';
+import { ButtonComponent } from '@/app/shared';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ToastService } from '../../../../core/service/toast.service';
 
 @Component({
   selector: 'app-edit-transaction',
   imports: [FormsModule, ButtonComponent],
   templateUrl: './edit-transaction.component.html',
-  styleUrl: './edit-transaction.css',
+  styleUrl: './edit-transaction.component.css',
 })
-export class EditTransactionCompoent {
+export class EditTransactionComponent {
   protected readonly transactionRefresher = output<void>();
   protected readonly store = inject(TransactionStore);
   protected readonly toast = inject(ToastService);
@@ -73,7 +73,6 @@ export class EditTransactionCompoent {
 
     this.store.editTransaction(transaction).subscribe({
       next: () => {
-        this.store.transactions.reload();
         this.transactionRefresher.emit();
         form.resetForm();
         this.hasError.set(false);

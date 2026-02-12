@@ -1,9 +1,9 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TransactionRequestModel } from '@/app/core/models';
-import { TransactionStore } from '../../../../core/store/transaction.store';
-import { ToastService } from '../../../../core/service';
-import { ButtonComponent } from "../../../../shared";
+import { ButtonComponent } from '@/app/shared';
+import { TransactionStore } from '@/app/core/store/transaction.store';
+import { ToastService } from '@/app/core/service';
 
 @Component({
   selector: 'app-new-transaction',
@@ -12,19 +12,19 @@ import { ButtonComponent } from "../../../../shared";
   styleUrls: ['./new-transaction.component.css'],
 })
 export class NewTransactionComponent {
-  protected readonly transactionRefresher = output<void>();
+  public readonly transactionRefresher = output<void>();
 
   protected readonly store = inject(TransactionStore);
   private readonly toast = inject(ToastService);
 
   protected readonly hasError = signal(false);
-  protected readonly isLoading = signal(false);
-  protected readonly occurredAt = signal<Date>(new Date());
-  protected readonly amount = signal<number>(0);
-  protected readonly reference = signal<string>('');
-  protected readonly description = signal<string>('');
-  protected readonly budget = signal<number | null>(null);
-  protected readonly category = signal<number | null>(null);
+  public readonly isLoading = signal(false);
+  public readonly occurredAt = signal<Date>(new Date());
+  public readonly amount = signal<number>(0);
+  public readonly reference = signal<string>('');
+  public readonly description = signal<string>('');
+  public readonly budget = signal<number | null>(null);
+  public readonly category = signal<number | null>(null);
 
   onSubmitTransaction(form: NgForm) {
     this.isLoading.set(true);
@@ -51,7 +51,6 @@ export class NewTransactionComponent {
 
     this.store.createTransaction(transaction).subscribe({
       next: () => {
-        this.store.transactions.reload();
         this.transactionRefresher.emit();
         form.resetForm();
         this.hasError.set(false);
