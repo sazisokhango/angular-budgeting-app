@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
-import { TransactionRowComponent } from '../transaction-row/transaction-row.component';
 import { TransactionModel } from '@/app/core/models';
+import { TransactionRowComponent } from '@/app/features/transactions';
 
 @Component({
   selector: 'app-transaction-table',
@@ -10,11 +10,11 @@ import { TransactionModel } from '@/app/core/models';
 })
 export class TransactionTableComponent {
   public readonly tableData = input.required<TransactionModel[]>();
-  protected readonly editTranactionRequested = output<TransactionModel>();
+  protected readonly editTransactionRequested = output<TransactionModel>();
   protected readonly deleteTransactionRequested = output<TransactionModel>();
 
   public requestTransactionEdit(transaction: TransactionModel) {
-    this.editTranactionRequested.emit(transaction);
+    this.editTransactionRequested.emit(transaction);
   }
 
   public requestTransactionDelete(transaction: TransactionModel) {

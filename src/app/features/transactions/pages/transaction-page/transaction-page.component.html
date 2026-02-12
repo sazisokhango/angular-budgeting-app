@@ -9,11 +9,13 @@
   New Transaction
 </button>
 <app-transaction-table
-  (editTranactionRequested)="requestTransactionEdit($event)"
+  (editTransactionRequested)="requestTransactionEdit($event)"
   (deleteTransactionRequested)="requestTransactionDelete($event)"
   [tableData]="store.transactions.value()!"
 />
-} @else {
+} @else if(store.transactions.isLoading()){
+  <p>Loading Transactions...</p>
+}@else {
 <p>Transactions are not available</p>
 } @if (isDrawerOpen() && drawerMode === 'new-mode') {
 <app-drawer (closeDrawer)="onOpen()" title="New Transaction">
