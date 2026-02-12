@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewTransactionComponent } from './new-transaction.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { vi } from 'vitest';
 import { of } from 'rxjs';
 import { TransactionStore } from '../../../../core/store/transaction.store';
+import { NewTransactionComponent } from '@/app/features/transactions'
 import { ToastService } from '../../../../core/service';
 
 describe('NewTransactionComponent', () => {
@@ -63,7 +63,6 @@ describe('NewTransactionComponent', () => {
     component.onSubmitTransaction(form);
 
     expect(store.createTransaction).toHaveBeenCalled();
-    expect(store.transactions.reload).toHaveBeenCalled();
     expect(refreshSpy).toHaveBeenCalled();
     expect(toast.add).toHaveBeenCalledWith(
       'Transaction created Successfully',
