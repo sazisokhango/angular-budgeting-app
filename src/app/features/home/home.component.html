@@ -1,0 +1,8 @@
+<h1 class="text-center text-2xl md:text-5xl">Welcome to the Budgeting app</h1>
+
+@if (transactionList().length > 0) {
+    <p class="text-lg py-6">Transactions Summary</p>
+    <app-transaction-table [tableData]="sortedList" />
+} @else {
+    <p>Transactions are not available</p>
+}

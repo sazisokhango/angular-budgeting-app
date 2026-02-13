@@ -1,0 +1,34 @@
+<ng-container>
+  <td class="px-4 py-2 md:py-3 block md:table-cell">
+    <span class="md:hidden font-semibold">Date:</span>
+    {{ transaction().occurredAt | date : 'yyyy-MM-dd' }}
+  </td>
+
+  <td class="px-4 py-2 md:py-3 block md:table-cell">
+    <span class="md:hidden font-semibold">Description:</span>
+    {{ transaction().description }}
+  </td>
+
+  <td class="px-4 py-2 md:py-3 block md:table-cell font-medium text-green-600 dark:text-green-400">
+    <span class="md:hidden font-semibold">Amount:</span>
+    {{ transaction().amount | currency : 'ZAR' }}
+  </td>
+
+  <td class="px-4 py-2 md:py-3 block md:table-cell">
+    <span class="md:hidden font-semibold">Category:</span>
+    {{ transaction().category.name }}
+  </td>
+  <td>
+      <button
+        class="rounded-lg text-sm text-white px-8 py-2 cursor-pointer"
+        (click)="edit()"
+        ><fa-icon [icon]="faEditIcon"></fa-icon
+      ></button>
+      <button
+        class="rounded-lg text-sm text-white px-8 py-2 cursor-pointer"
+        (click)="delete()"
+        ><fa-icon [icon]="faTrashIcon"></fa-icon
+      ></button>
+      
+  </td>
+</ng-container>

@@ -1,0 +1,21 @@
+<div class="overflow-x-auto rounded-lg pb-8">
+  <table class="w-full border-collapse bg-white dark:bg-gray-800">
+    <thead class="hidden md:table-header-group">
+      <tr
+        class="bg-gray-100 dark:bg-gray-700 text-left text-sm font-semibold text-gray-700 dark:text-gray-200"
+      >
+        <th class="px-4 py-3">Date</th>
+        <th class="px-4 py-3">Description</th>
+        <th class="px-4 py-3">Amount</th>
+        <th class="px-4 py-3">Category</th>
+        <th class="px-4 py-3">Action</th>
+      </tr>
+    </thead>
+
+    <tbody class="text-sm text-gray-700 dark:text-gray-300">
+      @for (trans of tableData(); track $index) {
+        <tr appTransactionRow (editTransaction)="requestTransactionEdit($event)" (deleteTransaction)="requestTransactionDelete($event)" [transaction]="trans"></tr>
+      }
+    </tbody>
+  </table>
+</div>
