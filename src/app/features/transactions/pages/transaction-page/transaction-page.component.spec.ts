@@ -68,6 +68,8 @@ describe('Transaction page', () => {
   let component: TransactionsComponent;
 
   beforeEach(async () => {
+    vi.clearAllMocks();
+
     await TestBed.configureTestingModule({
       imports: [TransactionsComponent],
       providers: [{ provide: TransactionStore, useValue: transactionStoreMock }],
@@ -105,7 +107,6 @@ describe('Transaction page', () => {
   });
 
   it('should delete transaction after confirmation', () => {
-
     const tableDebug = fixture.debugElement.query(
       (de) => de.componentInstance instanceof TransactionTableStub
     );
@@ -127,24 +128,51 @@ describe('Transaction page', () => {
     fixture.detectChanges();
 
     expect(transactionStoreMock.deleteTransaction).toHaveBeenCalledWith('tx-1');
+    expect(component.showConfirmation()).toBe(false);
+  });
+
+  it('should not call delete when use cancels', () => {
+    const tableDebug = fixture.debugElement.query(
+      (de) => de.componentInstance instanceof TransactionTableStub
+    );
+
+    const table = tableDebug.componentInstance as TransactionTableStub;
+
+    table.deleteTransactionRequested.emit(mockTransaction);
+    fixture.detectChanges();
+
+    expect(component.showConfirmation()).toBe(true);
+
+    const confirmDebug = fixture.debugElement.query(
+      (de) => de.componentInstance instanceof ConfirmDialogStub
+    );
+
+    const confirm = confirmDebug.componentInstance as ConfirmDialogStub;
+
+    confirm.confirmed.emit(false);
+    fixture.detectChanges();
+
+    expect(transactionStoreMock.deleteTransaction).not.toHaveBeenCalled();
+    expect(component.showConfirmation()).toBe(false);
+
   });
 
   it('should reload transactions after the delete', () => {
     const tabledebug = fixture.debugElement.query(
-      de => de.componentInstance instanceof TransactionTableStub
-    )
+      (de) => de.componentInstance instanceof TransactionTableStub
+    );
 
     const table = tabledebug.componentInstance as TransactionTableStub;
     table.deleteTransactionRequested.emit(mockTransaction);
-    fixture.detectChanges()
+    fixture.detectChanges();
 
     const confirmDebug = fixture.debugElement.query(
-      de => de.componentInstance instanceof ConfirmDialogStub
-    )
-    const confirm  = confirmDebug.componentInstance as ConfirmDialogStub;
+      (de) => de.componentInstance instanceof ConfirmDialogStub
+    );
+    const confirm = confirmDebug.componentInstance as ConfirmDialogStub;
     confirm.confirmed.emit(true);
     fixture.detectChanges();
 
     expect(transactionStoreMock.transactions.reload).toHaveBeenCalled();
-  })
+  });
 });

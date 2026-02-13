@@ -70,7 +70,6 @@ export class TransactionsComponent {
     this.showConfirmation.set(false);
 
     if (isToBeDeleted) {
-      // this.isLoading.set(true);
       const tx = this.selectedTransaction();
 
       if (!tx) {
