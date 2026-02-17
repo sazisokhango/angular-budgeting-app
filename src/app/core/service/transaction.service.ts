@@ -8,14 +8,17 @@ import {
   TransactionRequestModel,
 } from '@/app/core/models';
 import { environment } from '../../../environments/environment.development';
+import { SummaryModel } from '../models/summary,model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
   private readonly baseUrl = `${environment.apiUrl}/transactions`;
+  private readonly transactionSummaryUrl =  `${this.baseUrl}/summary`;
   private readonly categoryUrl = `${this.baseUrl}/category`;
   private readonly budgetUrl = `${this.baseUrl}/budget`;
+
 
   private readonly httpClient = inject(HttpClient);
 
@@ -44,5 +47,9 @@ export class TransactionService {
 
   public deleteTransaction(transactionId: string): Observable<void> {
     return this.httpClient.delete<void>(this.baseUrl, { params: { transactionId } });
+  }
+
+  public getTransactionSummary(): Observable<SummaryModel> {
+    return this.httpClient.get<SummaryModel>(this.transactionSummaryUrl)
   }
 }
