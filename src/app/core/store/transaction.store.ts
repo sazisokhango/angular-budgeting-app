@@ -57,17 +57,27 @@ export class TransactionStore {
     return this.service.updateTransaction(body).pipe(
       catchError((error) => {
         this.toastService.add('Error updating the Transaction', 'error', 3000);
-        return throwError(()=> error)
+        return throwError(() => error);
       })
     );
   }
 
   deleteTransaction(id: Readonly<string>) {
     return this.service.deleteTransaction(id).pipe(
-      catchError(error => {
+      catchError((error) => {
         this.toastService.add('Error deleting the Transaction', 'error', 3000);
-        return throwError(() => error)
+        return throwError(() => error);
       })
-    )
+    );
   }
+
+  readonly dashboardSummary = rxResource({
+    stream: () =>
+      this.service.getTransactionSummary().pipe(
+        catchError((error) => {
+          this.toastService.add('Error fetching the transaction summary', 'error', 3000);
+          return EMPTY;
+        })
+      ),
+  });
 }
