@@ -16,6 +16,10 @@ export class HomeComponent {
     () => this.store.transactions.value() ?? []
   );
 
+  protected readonly summary = computed(() => {
+    return this.store.dashboardSummary.value();
+  });
+
   protected get sortedList() {
     return this.transactionList()
       .sort((a, b) => {
