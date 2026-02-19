@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ToastService, TransactionService } from '../service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TransactionModel, TransactionRequestModel } from '../models';
-import { catchError, EMPTY, throwError } from 'rxjs';
+import { catchError, EMPTY, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -46,15 +46,23 @@ export class TransactionStore {
 
   createTransaction(request: Readonly<TransactionRequestModel>) {
     return this.service.createTransaction(request).pipe(
+      tap(() => {
+        this.transactions.reload();
+        this.dashboardSummary.reload();
+      }),
       catchError((error) => {
         this.toastService.add('Error creating Transaction', 'error', 3000);
-        return EMPTY;
+        return throwError(() => error);
       })
     );
   }
 
   editTransaction(body: Readonly<TransactionModel>) {
     return this.service.updateTransaction(body).pipe(
+      tap(() => {
+        this.transactions.reload();
+        this.dashboardSummary.reload();
+      }),
       catchError((error) => {
         this.toastService.add('Error updating the Transaction', 'error', 3000);
         return throwError(() => error);
