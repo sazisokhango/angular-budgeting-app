@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts'; 
+import { BaseChartDirective } from 'ng2-charts';
 import { Chart, registerables } from 'chart.js';
 
 @Component({
@@ -28,12 +28,10 @@ export class ChartComponent {
 
   public barChartOptions = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
   };
 
   constructor() {
     Chart.register(...registerables);
   }
-
-
 }
