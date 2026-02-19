@@ -2,12 +2,13 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionTableComponent } from '@/app/features/transactions';
 import { TransactionStore } from '@/app/core/store/transaction.store';
 import { TransactionModel } from '@/app/core/models';
+import { ChartComponent } from "@/app/shared/components/chart/chart.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  imports: [TransactionTableComponent],
+  imports: [TransactionTableComponent, ChartComponent],
 })
 export class HomeComponent {
   protected readonly store = inject(TransactionStore);
@@ -26,5 +27,17 @@ export class HomeComponent {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       })
       .slice(0, 5);
+  }
+
+  protected readonly chartLabel = computed(() => {
+    return this.store.dashboardSummary.value()?.spendByCategory.map(l => l.name) ?? []
+  })
+
+  protected readonly chartValues = computed(() => {
+    return this.store.dashboardSummary.value()?.spendByCategory.map(v => v.total) ?? []
+  })
+
+  protected chartTotals() {
+    return this.summary()?.spendByCategory.map((t) => t.total);
   }
 }
