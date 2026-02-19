@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ToastService, TransactionService } from '../service';
+import { ToastService, TransactionService } from '../services';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { TransactionModel, TransactionRequestModel } from '../models';
 import { catchError, EMPTY, tap, throwError } from 'rxjs';

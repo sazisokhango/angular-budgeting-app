@@ -1,5 +1,5 @@
 import { TransactionModel } from '@/app/core/models';
-import { ToastService } from '@/app/core/service';
+import { ToastService } from '@/app/core/services';
 import { TransactionStore } from '@/app/core/store/transaction.store';
 import { ButtonComponent } from '@/app/shared';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
