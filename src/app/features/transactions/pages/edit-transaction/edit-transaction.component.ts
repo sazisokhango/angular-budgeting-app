@@ -9,7 +9,6 @@ import { FormsModule, NgForm } from '@angular/forms';
   selector: 'app-edit-transaction',
   imports: [FormsModule, ButtonComponent],
   templateUrl: './edit-transaction.component.html',
-  styleUrl: './edit-transaction.component.css',
 })
 export class EditTransactionComponent {
   protected readonly transactionRefresher = output<void>();

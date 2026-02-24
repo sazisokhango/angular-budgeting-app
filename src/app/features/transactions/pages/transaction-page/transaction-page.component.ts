@@ -80,13 +80,7 @@ export class TransactionsComponent {
         next: () => {
           this.store.transactions.reload();
           this.refreshTransaction();
-          // this.isLoading.set(true);
-          // this.hasError.set(false);
           this.toast.add('The Transaction was successfully deleted', 'success', 4000);
-        },
-        error: () => {
-          // this.isLoading.set(false);
-          // this.hasError.set(true);
         },
       });
     }

@@ -5,7 +5,6 @@ import { TransactionRowComponent } from '@/app/features/transactions';
 @Component({
   selector: 'app-transaction-table',
   templateUrl: './transaction-table.component.html',
-  styleUrl: './transaction-table.component.css',
   imports: [TransactionRowComponent],
 })
 export class TransactionTableComponent {

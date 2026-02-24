@@ -9,7 +9,6 @@ import { ToastService } from '@/app/core/services';
   selector: 'app-new-transaction',
   imports: [FormsModule, ButtonComponent],
   templateUrl: './new-transaction.component.html',
-  styleUrls: ['./new-transaction.component.css'],
 })
 export class NewTransactionComponent {
   public readonly transactionRefresher = output<void>();
