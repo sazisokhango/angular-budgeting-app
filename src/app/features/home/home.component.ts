@@ -1,8 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionTableComponent } from '@/app/features/transactions';
-import { TransactionStore } from '@/app/core/store/transaction.store';
 import { TransactionModel } from '@/app/core/models';
 import { ChartComponent } from '@/app/shared';
+import { TransactionStore } from '../transactions/store/transaction.store';
 
 
 @Component({
