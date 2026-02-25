@@ -7,8 +7,8 @@ import {
   TransactionModel,
   TransactionRequestModel,
 } from '@/app/core/models';
-import { environment } from '../../../environments/environment.development';
-import { SummaryModel } from '../models/summary,model';
+import { SummaryModel } from '@/app/core/models/summary,model';
+import { environment } from '@/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',

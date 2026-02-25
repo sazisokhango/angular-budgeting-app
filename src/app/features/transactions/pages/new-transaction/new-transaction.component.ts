@@ -2,8 +2,8 @@ import { Component, inject, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TransactionRequestModel } from '@/app/core/models';
 import { ButtonComponent } from '@/app/shared';
-import { TransactionStore } from '@/app/core/store/transaction.store';
-import { ToastService } from '@/app/core/services';
+import { TransactionStore } from '../../store/transaction.store';
+import { ToastService } from '@/app/core/Services';
 
 @Component({
   selector: 'app-new-transaction',
