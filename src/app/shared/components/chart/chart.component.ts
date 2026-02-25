@@ -7,7 +7,6 @@ import { Chart, registerables } from 'chart.js';
   imports: [BaseChartDirective],
   standalone: true,
   templateUrl: './chart.component.html',
-  styleUrl: './chart.component.css',
 })
 export class ChartComponent {
   public chartLabel = input.required<string[]>();

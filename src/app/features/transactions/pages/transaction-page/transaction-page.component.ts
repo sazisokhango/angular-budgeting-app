@@ -3,7 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ConfirmDialogComponent, Drawer } from '@/app/shared';
 import { TransactionStore } from '@/app/core/store/transaction.store';
 import { TransactionModel } from '@/app/core/models';
-import { ToastService } from '@/app/core/service';
+import { ToastService } from '@/app/core/services';
 import { TransactionTableComponent } from '../../components/transaction-table/transaction-table.component';
 import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
 import { EditTransactionComponent } from '../edit-transaction/edit-transaction.component';
@@ -80,13 +80,7 @@ export class TransactionsComponent {
         next: () => {
           this.store.transactions.reload();
           this.refreshTransaction();
-          // this.isLoading.set(true);
-          // this.hasError.set(false);
           this.toast.add('The Transaction was successfully deleted', 'success', 4000);
-        },
-        error: () => {
-          // this.isLoading.set(false);
-          // this.hasError.set(true);
         },
       });
     }

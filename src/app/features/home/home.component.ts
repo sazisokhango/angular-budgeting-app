@@ -2,12 +2,12 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { TransactionTableComponent } from '@/app/features/transactions';
 import { TransactionStore } from '@/app/core/store/transaction.store';
 import { TransactionModel } from '@/app/core/models';
-import { ChartComponent } from "@/app/shared/components/chart/chart.component";
+import { ChartComponent } from '@/app/shared';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
   imports: [TransactionTableComponent, ChartComponent],
 })
 export class HomeComponent {

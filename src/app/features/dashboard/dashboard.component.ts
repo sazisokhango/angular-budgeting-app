@@ -8,7 +8,6 @@ import { ToastComponent } from '@/app/shared';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   imports: [RouterLink, RouterOutlet, Footer, ToastComponent],
-  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
  protected isSidebarOpen: boolean = false;
