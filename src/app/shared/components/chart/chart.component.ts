@@ -18,6 +18,7 @@ export class ChartComponent {
   get chartData() {
     return {
       labels: this.labels(),
+      type: this.chartType(),
       datasets: this.datasets(),
     };
   }
