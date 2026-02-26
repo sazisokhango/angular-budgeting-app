@@ -3,9 +3,6 @@
 @if (transactionList().length > 0) {
 <p class="text-lg py-6">Transactions Summary</p>
 <app-transaction-table [tableData]="sortedList" />
-} @else {
-<p>Transactions are not available</p>
-}
 <div class="grid grid-cols-2 gap-4">
   <div class="bg-white shadow-lg rounded-lg p-4">
     <h1>Total number of Transactions</h1>
@@ -28,8 +25,10 @@
     <span class="text-green-600">{{ summary()?.netBalance }}</span>
   </div>
 </div>
+<h1 class="text-center text-2xl md:text-4xl mb-4">Income vs Expense over time(Months)</h1>
+<app-chart [labels]="incomeVsExpenseLabels()" [datasets]="incomeVsExpenseChartData" title="Spending" [chartType]="'bar'" />
 <h1 class="text-center text-2xl md:text-4xl mb-4">Group By Category</h1>
-<app-chart [chartLabel]="chartLabel()" [chartData]="chartValues()" title="Spending" />
+<app-chart [labels]="spendByCategoryLabels()" [datasets]="groupByCategoryData" title="Spending" [chartType]="'bar'" />
 <div class="pb-24">
   @for (cat of summary()?.spendByCategory; track $index){
   <div
@@ -41,3 +40,6 @@
   }
 </div>
 
+} @else {
+<p class="pt-8">Transactions are not available</p>
+}
