@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TransactionsComponent } from '@/app/features/transactions';
 import { Component, input, output } from '@angular/core';
-import { TransactionStore } from '@/app/core/store/transaction.store';
 import { of } from 'rxjs';
+import { TransactionStore } from '../../store/transaction.store';
 
 @Component({
   selector: 'app-transaction-table',
