@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { Chart, registerables } from 'chart.js';
+import { Chart, ChartConfiguration, registerables } from 'chart.js';
 
 @Component({
   selector: 'app-chart',
@@ -9,23 +9,20 @@ import { Chart, registerables } from 'chart.js';
   templateUrl: './chart.component.html',
 })
 export class ChartComponent {
-  public chartLabel = input.required<string[]>();
-  public chartData = input.required<number[]>();
-  public title = input.required<string>();
+  public datasets = input.required<ChartConfiguration<'bar'>['data']['datasets']>();
+  public labels = input.required<string[]>();
+  public chartType = input.required<
+    'bar' | 'bubble' | 'doughnut' | 'line' | 'pie' | 'radar' | 'polarArea' | 'scatter'
+  >();
 
-  get barChartData() {
+  get chartData() {
     return {
-      labels: this.chartLabel(),
-      datasets: [
-        {
-          data: this.chartData(),
-          label: this.title(),
-        },
-      ],
+      labels: this.labels(),
+      datasets: this.datasets(),
     };
   }
 
-  public barChartOptions = {
+  public chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
   };
