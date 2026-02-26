@@ -1,4 +1,4 @@
-import { SpendByCategoryModel } from './spendByCategory';
+import { SpendByCategoryModel } from './spendByCategory.model';
 
 export interface SummaryModel {
   totalIncome: number;
