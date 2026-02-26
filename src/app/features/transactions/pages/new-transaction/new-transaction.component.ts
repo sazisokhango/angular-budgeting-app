@@ -18,7 +18,7 @@ export class NewTransactionComponent {
 
   protected readonly hasError = signal(false);
   public readonly isLoading = signal(false);
-  public readonly occurredAt = signal<Date>(new Date());
+  public readonly occurredAt = signal<Date | null>(new Date());
   public readonly amount = signal<number>(0);
   public readonly reference = signal<string>('');
   public readonly description = signal<string>('');

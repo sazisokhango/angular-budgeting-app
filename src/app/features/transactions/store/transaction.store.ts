@@ -48,8 +48,7 @@ export class TransactionStore {
   createTransaction(request: Readonly<TransactionRequestModel>) {
     return this.service.createTransaction(request).pipe(
       tap(() => {
-        this.transactions.reload();
-        this.dashboardSummary.reload();
+       this.reload();
       }),
       catchError((error) => {
         this.toastService.add('Error creating Transaction', 'error', 3000);
@@ -61,8 +60,7 @@ export class TransactionStore {
   editTransaction(body: Readonly<TransactionModel>) {
     return this.service.updateTransaction(body).pipe(
       tap(() => {
-        this.transactions.reload();
-        this.dashboardSummary.reload();
+       this.reload();
       }),
       catchError((error) => {
         this.toastService.add('Error updating the Transaction', 'error', 3000);
@@ -73,6 +71,9 @@ export class TransactionStore {
 
   deleteTransaction(id: Readonly<string>) {
     return this.service.deleteTransaction(id).pipe(
+      tap(() => {
+       this.reload()
+      }),
       catchError((error) => {
         this.toastService.add('Error deleting the Transaction', 'error', 3000);
         return throwError(() => error);
@@ -89,4 +90,20 @@ export class TransactionStore {
         })
       ),
   });
+
+  readonly monthlySummary = rxResource({
+    stream: () =>
+      this.service.getMonthlySummary().pipe(
+        catchError((error) => {
+          this.toastService.add('Error fetching the monthly transaction summary', 'error', 3000);
+          return EMPTY;
+        })
+      ),
+  });
+
+  private reload() {
+    this.transactions.reload();
+    this.dashboardSummary.reload();
+    this.monthlySummary.reload();
+  }
 }
