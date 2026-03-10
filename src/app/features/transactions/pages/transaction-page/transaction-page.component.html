@@ -11,6 +11,7 @@
   (editTransactionRequested)="requestTransactionEdit($event)"
   (deleteTransactionRequested)="requestTransactionDelete($event)"
   [tableData]="store.transactions.value()!"
+  [showActionButtons]="true"
 />
 } @else if(store.transactions.isLoading()){
   <p>Loading Transactions...</p>

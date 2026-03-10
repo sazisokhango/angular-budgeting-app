@@ -44,7 +44,7 @@ class EditTransactionStub {
 }
 
 //mocking a transaction model
-const mockTransaction = {
+const transactionMock = {
   transactionId: 'tx-1',
   amount: 100,
   reference: 'REF',
@@ -57,7 +57,7 @@ const mockTransaction = {
 //mocking transaction store
 const transactionStoreMock = {
   transactions: {
-    value: () => [mockTransaction],
+    value: () => [transactionMock],
     reload: vi.fn(),
   },
   deleteTransaction: vi.fn(() => of(void 0)),
@@ -97,11 +97,11 @@ describe('Transaction page', () => {
 
     const table = tableDebug.componentInstance as TransactionTableStub;
 
-    table.editTransactionRequested.emit(mockTransaction);
+    table.editTransactionRequested.emit(transactionMock);
 
     fixture.detectChanges();
 
-    expect(component.selectedTransaction()).toEqual(mockTransaction);
+    expect(component.selectedTransaction()).toEqual(transactionMock);
     expect(component.isDrawerOpen()).toBe(true);
     expect(component.drawerMode).toBe('edit-mode');
   });
@@ -113,7 +113,7 @@ describe('Transaction page', () => {
 
     const table = tableDebug.componentInstance as TransactionTableStub;
 
-    table.deleteTransactionRequested.emit(mockTransaction);
+    table.deleteTransactionRequested.emit(transactionMock);
     fixture.detectChanges();
 
     expect(component.showConfirmation()).toBe(true);
@@ -138,7 +138,7 @@ describe('Transaction page', () => {
 
     const table = tableDebug.componentInstance as TransactionTableStub;
 
-    table.deleteTransactionRequested.emit(mockTransaction);
+    table.deleteTransactionRequested.emit(transactionMock);
     fixture.detectChanges();
 
     expect(component.showConfirmation()).toBe(true);
@@ -163,7 +163,7 @@ describe('Transaction page', () => {
     );
 
     const table = tabledebug.componentInstance as TransactionTableStub;
-    table.deleteTransactionRequested.emit(mockTransaction);
+    table.deleteTransactionRequested.emit(transactionMock);
     fixture.detectChanges();
 
     const confirmDebug = fixture.debugElement.query(
