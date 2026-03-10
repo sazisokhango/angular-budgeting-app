@@ -12,6 +12,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 })
 export class TransactionRowComponent {
   public readonly transaction = input.required<TransactionModel>();
+  public readonly showActionButtons = input.required<Boolean>();
   public readonly editTransaction = output<TransactionModel>();
   public readonly deleteTransaction = output<TransactionModel>();
   protected readonly faEditIcon = faEdit;

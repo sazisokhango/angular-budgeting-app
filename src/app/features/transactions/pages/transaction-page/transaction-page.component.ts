@@ -26,8 +26,10 @@ export class TransactionsComponent {
   public readonly selectedTransaction = signal<TransactionModel | null>(null);
   protected readonly isDeleteConfirmed = signal(false);
   public readonly showConfirmation = signal(false);
-  protected readonly toast = inject(ToastService);
   public isDrawerOpen = signal(false);
+
+
+  protected readonly toast = inject(ToastService);
 
   public drawerMode: 'new-mode' | 'edit-mode' | 'none' = 'none';
 

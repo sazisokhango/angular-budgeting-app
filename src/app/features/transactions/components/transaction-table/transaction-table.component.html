@@ -8,7 +8,9 @@
         <th class="px-4 py-3">Description</th>
         <th class="px-4 py-3">Amount</th>
         <th class="px-4 py-3">Category</th>
-        <th class="px-4 py-3">Action</th>
+        @if(showActionButtons()) {
+          <th class="px-4 py-3">Action</th>
+        }
       </tr>
     </thead>
 
@@ -20,6 +22,7 @@
         (editTransaction)="requestTransactionEdit($event)"
         (deleteTransaction)="requestTransactionDelete($event)"
         [transaction]="trans"
+        [showActionButtons]="showActionButtons()"
       ></tr>
       }
     </tbody>

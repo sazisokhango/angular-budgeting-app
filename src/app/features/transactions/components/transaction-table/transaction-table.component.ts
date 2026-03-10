@@ -9,6 +9,7 @@ import { TransactionRowComponent } from '@/app/features/transactions';
 })
 export class TransactionTableComponent {
   public readonly tableData = input.required<TransactionModel[]>();
+  public readonly showActionButtons = input.required<Boolean>();
   protected readonly editTransactionRequested = output<TransactionModel>();
   protected readonly deleteTransactionRequested = output<TransactionModel>();
 

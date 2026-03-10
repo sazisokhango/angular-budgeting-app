@@ -46,10 +46,6 @@ export class HomeComponent {
     return this.store.dashboardSummary.value()?.spendByCategory.map((v) => v.total) ?? [];
   });
 
-  protected chartTotals() {
-    return this.summary()?.spendByCategory.map((t) => t.total);
-  }
-
   get incomeVsExpenseChartData() {
     return [
       {
