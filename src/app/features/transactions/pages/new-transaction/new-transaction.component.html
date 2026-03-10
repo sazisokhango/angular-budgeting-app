@@ -1,10 +1,10 @@
-<form class="grid grid-cols-1 gap-4" #form="ngForm" (ngSubmit)="onSubmitTransaction(form)">
+<form appForm (formValue)="formValue.set($event)" class="grid grid-cols-1 gap-4" #form="ngForm" (ngSubmit)="onSubmitTransaction(form)">
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Occurred At</label>
     <input
       name="occurredAt"
-      [(ngModel)]="occurredAt"
-      type="date"
+      [ngModel]="formValue()?.occurredAt"
+      type="datetime-local"
       required
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
@@ -14,41 +14,50 @@
     <label class="text-sm font-medium text-gray-700">Amount</label>
     <input
       name="amount"
-      [(ngModel)]="amount"
+      [ngModel]="formValue()?.amount"
       type="number"
       min="1"
       required
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
+  @if(formValue()?.amount <= 0 || formValue()?.amount === undefined) {
+    <p class="text-red-400">Please fill in with a positive amount</p>
+   }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Reference</label>
     <input
       name="reference"
-      [(ngModel)]="reference"
+      [ngModel]="formValue()?.reference"
       type="text"
       required
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
+ @if(formValue()?.reference === undefined || formValue()?.reference === '') {
+  <p class="text-red-400">Please fill in the reference</p>
+ }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Description</label>
     <input
       name="description"
-      [(ngModel)]="description"
+      [ngModel]="formValue()?.description"
       type="text"
       required
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
+  @if(formValue()?.description === undefined || formValue()?.description === '') {
+    <p class="text-red-400">Please fill in the description</p>
+   }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Category</label>
     <select
       name="category"
-      [(ngModel)]="category"
+      [ngModel]="formValue()?.category"
       id=""
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
@@ -57,12 +66,15 @@
       }
     </select>
   </div>
+  @if(formValue()?.category === null || formValue()?.category === undefined) {
+    <p class="text-red-400">Please fill in the category</p>
+   }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Budget</label>
     <select
       name="budget"
-      [(ngModel)]="budget"
+      [ngModel]="formValue()?.budget"
       id=""
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
@@ -71,5 +83,8 @@
       }
     </select>
   </div>
+  @if(formValue()?.budget === null || formValue()?.budget === undefined) {
+    <p class="text-red-400">Please fill in the category</p>
+   }
   <app-button buttonType="success" [isDisabled]="form.invalid!" [isLoading]="isLoading()" label='Submit' type='submit' ></app-button>
 </form>
