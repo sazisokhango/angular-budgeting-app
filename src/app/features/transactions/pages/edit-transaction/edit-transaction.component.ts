@@ -1,15 +1,14 @@
 import { TransactionModel } from '@/app/core/models';
-import { ToastService } from '@/app/core/service';
-import { TransactionStore } from '@/app/core/store/transaction.store';
 import { ButtonComponent } from '@/app/shared';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { TransactionStore } from '../../store/transaction.store';
+import { ToastService } from '@/app/core/Services';
 
 @Component({
   selector: 'app-edit-transaction',
   imports: [FormsModule, ButtonComponent],
   templateUrl: './edit-transaction.component.html',
-  styleUrl: './edit-transaction.component.css',
 })
 export class EditTransactionComponent {
   protected readonly transactionRefresher = output<void>();

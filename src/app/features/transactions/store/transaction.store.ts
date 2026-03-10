@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { ToastService, TransactionService } from '../service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { TransactionModel, TransactionRequestModel } from '../models';
-import { catchError, EMPTY, throwError } from 'rxjs';
+import { catchError, EMPTY, tap, throwError } from 'rxjs';
+import { TransactionService } from '../services';
+import { ToastService } from '@/app/core/Services';
+import { TransactionModel, TransactionRequestModel } from '@/app/core/models';
 
 @Injectable({
   providedIn: 'root',
@@ -46,28 +47,63 @@ export class TransactionStore {
 
   createTransaction(request: Readonly<TransactionRequestModel>) {
     return this.service.createTransaction(request).pipe(
+      tap(() => {
+       this.reload();
+      }),
       catchError((error) => {
         this.toastService.add('Error creating Transaction', 'error', 3000);
-        return EMPTY;
+        return throwError(() => error);
       })
     );
   }
 
   editTransaction(body: Readonly<TransactionModel>) {
     return this.service.updateTransaction(body).pipe(
+      tap(() => {
+       this.reload();
+      }),
       catchError((error) => {
         this.toastService.add('Error updating the Transaction', 'error', 3000);
-        return throwError(()=> error)
+        return throwError(() => error);
       })
     );
   }
 
   deleteTransaction(id: Readonly<string>) {
     return this.service.deleteTransaction(id).pipe(
-      catchError(error => {
+      tap(() => {
+       this.reload()
+      }),
+      catchError((error) => {
         this.toastService.add('Error deleting the Transaction', 'error', 3000);
-        return throwError(() => error)
+        return throwError(() => error);
       })
-    )
+    );
+  }
+
+  readonly dashboardSummary = rxResource({
+    stream: () =>
+      this.service.getTransactionSummary().pipe(
+        catchError((error) => {
+          this.toastService.add('Error fetching the transaction summary', 'error', 3000);
+          return EMPTY;
+        })
+      ),
+  });
+
+  readonly monthlySummary = rxResource({
+    stream: () =>
+      this.service.getMonthlySummary().pipe(
+        catchError((error) => {
+          this.toastService.add('Error fetching the monthly transaction summary', 'error', 3000);
+          return EMPTY;
+        })
+      ),
+  });
+
+  private reload() {
+    this.transactions.reload();
+    this.dashboardSummary.reload();
+    this.monthlySummary.reload();
   }
 }

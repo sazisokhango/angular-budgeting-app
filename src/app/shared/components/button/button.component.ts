@@ -5,7 +5,6 @@ import { Component, computed, input, output } from '@angular/core';
   selector: 'app-button',
   imports: [NgClass],
   templateUrl: './button.component.html',
-  styleUrl: './button.component.css',
 })
 export class ButtonComponent {
   readonly label = input.required<string>();

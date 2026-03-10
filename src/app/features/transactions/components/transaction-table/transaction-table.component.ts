@@ -5,11 +5,11 @@ import { TransactionRowComponent } from '@/app/features/transactions';
 @Component({
   selector: 'app-transaction-table',
   templateUrl: './transaction-table.component.html',
-  styleUrl: './transaction-table.component.css',
   imports: [TransactionRowComponent],
 })
 export class TransactionTableComponent {
   public readonly tableData = input.required<TransactionModel[]>();
+  public readonly showActionButtons = input.required<Boolean>();
   protected readonly editTransactionRequested = output<TransactionModel>();
   protected readonly deleteTransactionRequested = output<TransactionModel>();
 

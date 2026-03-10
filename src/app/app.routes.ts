@@ -8,6 +8,11 @@ export const routes: Routes = [
     component: DashboardComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full', 
+      },
+      {
         path: 'home',
         loadComponent: () =>
           import('@/app/features/home/home.component').then((r) => r.HomeComponent),

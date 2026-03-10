@@ -1,15 +1,15 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, effect, inject, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { TransactionRequestModel } from '@/app/core/models';
 import { ButtonComponent } from '@/app/shared';
-import { TransactionStore } from '@/app/core/store/transaction.store';
-import { ToastService } from '@/app/core/service';
+import { TransactionStore } from '../../store/transaction.store';
+import { ToastService } from '@/app/core/Services';
+import { FormDirective } from '@/app/shared/directives/form';
+import { TransactionRequestModel } from '@/app/core/models';
 
 @Component({
   selector: 'app-new-transaction',
-  imports: [FormsModule, ButtonComponent],
+  imports: [FormsModule, ButtonComponent, FormDirective],
   templateUrl: './new-transaction.component.html',
-  styleUrls: ['./new-transaction.component.css'],
 })
 export class NewTransactionComponent {
   public readonly transactionRefresher = output<void>();
@@ -19,40 +19,31 @@ export class NewTransactionComponent {
 
   protected readonly hasError = signal(false);
   public readonly isLoading = signal(false);
-  public readonly occurredAt = signal<Date>(new Date());
-  public readonly amount = signal<number>(0);
-  public readonly reference = signal<string>('');
-  public readonly description = signal<string>('');
-  public readonly budget = signal<number | null>(null);
-  public readonly category = signal<number | null>(null);
+
+  protected readonly formValue = signal<any>({});
+
+  constructor() {
+    effect(() => {
+      console.log(this.formValue());
+    });
+  }
 
   onSubmitTransaction(form: NgForm) {
     this.isLoading.set(true);
-    const category = this.store.categories.value().find((c) => {
-      return c.id === Number(this.category());
-    });
-
-    const budget = this.store.budgets.value().find((b) => {
-      return b.id === Number(this.budget());
-    });
-
-    if (!category || !budget) {
-      throw new Error('Category or Budget not found');
-    }
 
     const transaction: TransactionRequestModel = {
-      amount: this.amount(),
-      reference: this.reference(),
-      occurredAt: this.occurredAt(),
-      description: this.description(),
-      category,
-      budget,
+      amount: form.form.value.amount,
+      reference: form.form.value.reference,
+      occurredAt: form.form.value.occurredAt,
+      description: form.form.value.description,
+      category: form.form.value.category,
+      budget: form.form.value.budget,
     };
 
     this.store.createTransaction(transaction).subscribe({
       next: () => {
-        this.transactionRefresher.emit();
         form.resetForm();
+        this.transactionRefresher.emit();
         this.hasError.set(false);
         this.toast.add('Transaction created Successfully', 'success', 4000);
       },

@@ -1,8 +1,45 @@
 <h1 class="text-center text-2xl md:text-5xl">Welcome to the Budgeting app</h1>
 
 @if (transactionList().length > 0) {
-    <p class="text-lg py-6">Transactions Summary</p>
-    <app-transaction-table [tableData]="sortedList" />
+<p class="text-lg py-6">Transactions Summary</p>
+<app-transaction-table [tableData]="sortedList" [showActionButtons]="false" />
+<div class="grid grid-cols-2 gap-4">
+  <div class="bg-white shadow-lg rounded-lg p-4">
+    <h1>Total number of Transactions</h1>
+    <span class="text-green-600">{{ summary()?.totalTransactions }}</span>
+  </div>
+  <div class="bg-white shadow-lg rounded-lg p-4">
+    <h1>Total number of pending Transactions</h1>
+    <span class="text-green-600">{{ summary()?.pendingTransactions }}</span>
+  </div>
+  <div class="bg-white shadow-lg rounded-lg p-4">
+    <h1>Total Income</h1>
+    <span class="text-green-600">{{ summary()?.totalIncome }}</span>
+  </div>
+  <div class="bg-white shadow-lg rounded-lg p-4">
+    <h1>Total Expense</h1>
+    <span class="text-green-600">{{ summary()?.totalExpenses }}</span>
+  </div>
+  <div class="bg-white shadow-lg rounded-lg p-4">
+    <h1>Net Balance</h1>
+    <span class="text-green-600">{{ summary()?.netBalance }}</span>
+  </div>
+</div>
+<h1 class="text-center text-2xl md:text-4xl mb-4">Income vs Expense over time(Months)</h1>
+<app-chart [labels]="incomeVsExpenseLabels()" [datasets]="incomeVsExpenseChartData" title="Spending" [chartType]="'bar'" />
+<h1 class="text-center text-2xl md:text-4xl mb-4">Group By Category</h1>
+<app-chart [labels]="spendByCategoryLabels()" [datasets]="groupByCategoryData" title="Spending" [chartType]="'bar'" />
+<div class="pb-24">
+  @for (cat of summary()?.spendByCategory; track $index){
+  <div
+    class="flex justify-between bg-gray-100 rounded-lg border-b border-gray-300 p-4 hover:shadow-lg hover:bg-blue-100"
+  >
+    <span>{{ cat.name }}</span>
+    <span>{{ cat.total }}</span>
+  </div>
+  }
+</div>
+
 } @else {
-    <p>Transactions are not available</p>
+<p class="pt-8">Transactions are not available</p>
 }

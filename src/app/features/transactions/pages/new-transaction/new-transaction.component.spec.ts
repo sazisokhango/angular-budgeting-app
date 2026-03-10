@@ -3,9 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { vi } from 'vitest';
 import { of } from 'rxjs';
-import { TransactionStore } from '../../../../core/store/transaction.store';
 import { NewTransactionComponent } from '@/app/features/transactions'
-import { ToastService } from '../../../../core/service';
+import { TransactionStore } from '../../store/transaction.store';
+import { ToastService } from '@/app/core/Services';
 
 describe('NewTransactionComponent', () => {
   let fixture: ComponentFixture<NewTransactionComponent>;

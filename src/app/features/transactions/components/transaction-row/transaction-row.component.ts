@@ -9,10 +9,10 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './transaction-row.component.html',
-  styleUrl: './transaction-row.component.css',
 })
 export class TransactionRowComponent {
   public readonly transaction = input.required<TransactionModel>();
+  public readonly showActionButtons = input.required<Boolean>();
   public readonly editTransaction = output<TransactionModel>();
   public readonly deleteTransaction = output<TransactionModel>();
   protected readonly faEditIcon = faEdit;
