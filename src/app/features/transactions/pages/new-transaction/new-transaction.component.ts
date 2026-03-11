@@ -1,4 +1,4 @@
-import { Component, effect, inject, output, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ButtonComponent } from '@/app/shared';
 import { TransactionStore } from '../../store/transaction.store';
@@ -22,11 +22,11 @@ export class NewTransactionComponent {
 
   protected readonly formValue = signal<any>({});
 
-  constructor() {
-    effect(() => {
-      console.log(this.formValue());
-    });
-  }
+  // constructor() {
+  //   effect(() => {
+  //     console.log(this.formValue());
+  //   });
+  // }
 
   onSubmitTransaction(form: NgForm) {
     this.isLoading.set(true);

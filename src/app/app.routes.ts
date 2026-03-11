@@ -10,7 +10,12 @@ export const routes: Routes = [
       {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full', 
+        pathMatch: 'full',
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('@/app/features/register/register.component').then((r) => r.RegisterComponent),
       },
       {
         path: 'home',
@@ -20,7 +25,9 @@ export const routes: Routes = [
       {
         path: 'transactions',
         loadChildren: () =>
-          import('@/app/features/transactions/transaction.routes').then((r) => r.TRANSACTION_ROUTES),
+          import('@/app/features/transactions/transaction.routes').then(
+            (r) => r.TRANSACTION_ROUTES
+          ),
       },
     ],
   },
