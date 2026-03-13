@@ -14,7 +14,7 @@ export class AuthService {
 
   private readonly httpClient = inject(HttpClient);
 
-  public registerUser(userRequest: UserRequestModel): Observable<UserResponseModel> {
+  public registerUser(userRequest: Readonly<FormData>): Observable<UserResponseModel> {
     return this.httpClient.post<UserResponseModel>(this.registerUrl, userRequest);
   }
 
