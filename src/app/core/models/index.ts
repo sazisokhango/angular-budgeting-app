@@ -4,3 +4,8 @@ export * from './category.model';
 export * from './budget.model';
 export * from './spendByCategory.model';
 export * from './spendByMonth.model';
+export * from './userRequest.model';
+export * from './userResponse.model';
+export * from './userLoginRequest.model';
+export * from './accountRequest.model';
+export * from './accountResponse.model';

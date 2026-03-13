@@ -10,7 +10,22 @@ export const routes: Routes = [
       {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full', 
+        pathMatch: 'full',
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('@/app/features/register/register.component').then((r) => r.RegisterComponent),
+      },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('@/app/features/login/login.component').then((r) => r.LoginComponent),
+      },
+      {
+        path: 'account',
+        loadComponent: () =>
+          import('@/app/features/account/account.component').then((r) => r.AccountAccount),
       },
       {
         path: 'home',
@@ -20,7 +35,9 @@ export const routes: Routes = [
       {
         path: 'transactions',
         loadChildren: () =>
-          import('@/app/features/transactions/transaction.routes').then((r) => r.TRANSACTION_ROUTES),
+          import('@/app/features/transactions/transaction.routes').then(
+            (r) => r.TRANSACTION_ROUTES
+          ),
       },
     ],
   },

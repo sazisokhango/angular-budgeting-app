@@ -1,0 +1,39 @@
+<h1>Please create an account</h1>
+
+<form
+  appForm
+  (formValue)="formValue.set($event)"
+  class="grid grid-cols-1 gap-4"
+  #form="ngForm"
+  (ngSubmit)="onSubmitAccount(form)"
+>
+<div class="flex flex-col gap-1">
+    <label>Account Name</label>
+    <input
+      name="name"
+      ngModel
+      required
+      placeholder="Main Account"
+      class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label>Starting Balance</label>
+    <input
+      name="balance"
+      ngModel
+      type="number"
+      required
+      placeholder="0"
+      class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+  <app-button
+    buttonType="success"
+    [isDisabled]="form.invalid!"
+    [isLoading]="isLoading()"
+    label="Submit"
+    type="submit"
+  ></app-button>
+</form>
