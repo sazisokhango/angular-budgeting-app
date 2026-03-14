@@ -14,4 +14,8 @@ export class AccountService {
   createAccount(accountRequest: Readonly<AccountRequestModel>): Observable<AccountResponseModel> {
     return this.httpClient.post<AccountResponseModel>(this.baseUrl, accountRequest);
   }
+
+  getAllAccounts() : Observable<AccountResponseModel[]> {
+    return this.httpClient.get<AccountResponseModel[]>(this.baseUrl);
+  }
 }

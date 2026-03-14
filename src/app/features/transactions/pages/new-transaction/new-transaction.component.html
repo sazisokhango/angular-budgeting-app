@@ -1,4 +1,27 @@
-<form appForm (formValue)="formValue.set($event)" class="grid grid-cols-1 gap-4" #form="ngForm" (ngSubmit)="onSubmitTransaction(form)">
+<form
+  appForm
+  (formValue)="formValue.set($event)"
+  class="grid grid-cols-1 gap-4"
+  #form="ngForm"
+  (ngSubmit)="onSubmitTransaction(form)"
+>
+
+<div class="flex flex-col gap-1">
+  <label class="text-sm font-medium text-gray-700">Account</label>
+  <select
+    name="account"
+    [ngModel]="formValue()?.account"
+    id=""
+    class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    @for (item of accounts() ; track item.id) {
+    <option [value]="item.id">{{ item.name }}</option>
+    }
+  </select>
+</div>
+@if(formValue()?.account === null || formValue()?.account === undefined) {
+  <p class="text-red-400">Please fill in the Account</p>
+  }
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Occurred At</label>
     <input
@@ -22,8 +45,8 @@
     />
   </div>
   @if(formValue()?.amount <= 0 || formValue()?.amount === undefined) {
-    <p class="text-red-400">Please fill in with a positive amount</p>
-   }
+  <p class="text-red-400">Please fill in with a positive amount</p>
+  }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Reference</label>
@@ -35,9 +58,9 @@
       class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
- @if(formValue()?.reference === undefined || formValue()?.reference === '') {
+  @if(formValue()?.reference === undefined || formValue()?.reference === '') {
   <p class="text-red-400">Please fill in the reference</p>
- }
+  }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Description</label>
@@ -50,8 +73,8 @@
     />
   </div>
   @if(formValue()?.description === undefined || formValue()?.description === '') {
-    <p class="text-red-400">Please fill in the description</p>
-   }
+  <p class="text-red-400">Please fill in the description</p>
+  }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Category</label>
@@ -67,8 +90,8 @@
     </select>
   </div>
   @if(formValue()?.category === null || formValue()?.category === undefined) {
-    <p class="text-red-400">Please fill in the category</p>
-   }
+  <p class="text-red-400">Please fill in the category</p>
+  }
 
   <div class="flex flex-col gap-1">
     <label class="text-sm font-medium text-gray-700">Budget</label>
@@ -84,7 +107,13 @@
     </select>
   </div>
   @if(formValue()?.budget === null || formValue()?.budget === undefined) {
-    <p class="text-red-400">Please fill in the category</p>
-   }
-  <app-button buttonType="success" [isDisabled]="form.invalid!" [isLoading]="isLoading()" label='Submit' type='submit' ></app-button>
+  <p class="text-red-400">Please fill in the category</p>
+  }
+  <app-button
+    buttonType="success"
+    [isDisabled]="form.invalid!"
+    [isLoading]="isLoading()"
+    label="Submit"
+    type="submit"
+  ></app-button>
 </form>

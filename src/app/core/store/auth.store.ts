@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthService, ToastService } from '../Services';
 import { UserLoginRequest } from '../models';
 import { catchError, throwError } from 'rxjs';
+import { ToastService } from '@/app/shared/toast.service';
+import { AuthService } from '../Services';
 
 @Injectable({
   providedIn: 'root',

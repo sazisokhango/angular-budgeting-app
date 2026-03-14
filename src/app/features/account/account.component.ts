@@ -1,11 +1,11 @@
 import { AccountRequestModel } from '@/app/core/models';
-import { ToastService } from '@/app/core/Services';
 import { AccountStore } from '@/app/core/store';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from "@/app/shared";
 import { FormDirective } from '@/app/shared/directives/form';
+import { ToastService } from '@/app/shared/toast.service';
 
 @Component({
   selector: 'app-account',

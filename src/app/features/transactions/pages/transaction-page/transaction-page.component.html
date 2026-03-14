@@ -6,18 +6,39 @@
 >
   New Transaction
 </button>
-@if (store.transactions.value()?.length) {
+@for (item of accounts(); track item.id) {
+<button
+  type="button"
+  (click)="selectAccount(item.id)"
+  class="flex items-center justify-between p-4 border-2 rounded-lg text-left transition-all hover:border-gray-400 focus:outline-none w-full"
+>
+  <span class="font-semibold text-gray-800">
+    {{ item.name }}
+  </span>
+
+  <span class="text-sm text-gray-500">
+    Balance:
+    <span class="font-mono font-medium text-gray-700">
+      {{ item.balance }}
+    </span>
+  </span>
+</button>
+} @if (transactionsList()?.length) {
 <app-transaction-table
   (editTransactionRequested)="requestTransactionEdit($event)"
   (deleteTransactionRequested)="requestTransactionDelete($event)"
-  [tableData]="store.transactions.value()!"
+  [tableData]="transactionsList()!"
   [showActionButtons]="true"
 />
 } @else if(store.transactions.isLoading()){
-  <p>Loading Transactions...</p>
-}@else {
+<p>Loading Transactions...</p>
+} @else if(!transactionsInAccount()) {
+  <p>No Transactions for this account</p>  
+}
+@else {
 <p>Transactions are not available</p>
-} @if (isDrawerOpen() && drawerMode === 'new-mode') {
+} 
+@if (isDrawerOpen() && drawerMode === 'new-mode') {
 <app-drawer (closeDrawer)="onOpen()" title="New Transaction">
   <app-new-transaction (transactionRefresher)="refreshTransaction()"></app-new-transaction>
 </app-drawer>
@@ -28,7 +49,9 @@
     (transactionRefresher)="refreshTransaction()"
   ></app-edit-transaction>
 </app-drawer>
-}
-@if(showConfirmation()) {
-  <app-confirm-dialog label="Are you sure you want to delete?" (confirmed)="checkConfirmation($event)"></app-confirm-dialog>
+} @if(showConfirmation()) {
+<app-confirm-dialog
+  label="Are you sure you want to delete?"
+  (confirmed)="checkConfirmation($event)"
+></app-confirm-dialog>
 }
