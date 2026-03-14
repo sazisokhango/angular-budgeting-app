@@ -47,14 +47,14 @@ export class NewTransactionComponent implements OnInit {
         this.categoryList.set([...categories]);
       },
       error: (error) => {
-        console.log(error), this.toastService.showError('Error fetching the Categories');
+        console.log(error), this.toastService.add('Error fetching the Categories', 'error', 4000);
       },
     });
 
     this.transactionService.getBudget().subscribe({
       next: (budget) => this.budgetList.set([...budget]),
       error: (error) => {
-        console.log(error), this.toastService.showError('Error fetching the Budget');
+        console.log(error), this.toastService.add('Error fetching the Budget', 'error', 4000);
       },
     });
   }
@@ -74,13 +74,13 @@ export class NewTransactionComponent implements OnInit {
     this.transactionService.createTransaction(transaction).subscribe({
       next: (data) => {
         this.transactionRefresher.emit(),
-          this.toastService.showSuccess('Transaction Created Successfully');
+          this.toastService.add('Transaction Created Successfully', 'success', 4000);
         form.resetForm();
         this.isLoading.set(false);
       },
       error: (error) => {
         console.log(error),
-          this.toastService.showError('Error creating Transaction'),
+          this.toastService.add('Error creating Transaction', 'error', 4000),
           this.isLoading.set(false);
       },
     });

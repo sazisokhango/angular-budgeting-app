@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
         );
       },
       error: (error) => {
-        console.log(error), this.toastService.showError('Error creating Transaction');
+        console.log(error), this.toastService.add('Error creating Transaction', 'error', 4000);
       },
     });
   }

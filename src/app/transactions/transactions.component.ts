@@ -27,7 +27,7 @@ export class TransactionsComponent implements OnInit {
     this.transactionService.getTransactions().subscribe({
       next: (data) => this.transactions.set(data),
       error: (error) => {
-        console.log(error), this.toastService.showError('Error fetching the Transactions');
+        console.log(error), this.toastService.add('Error fetching the Transactions', 'error', 4000);
       },
     });
     this.onClose();

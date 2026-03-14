@@ -3,8 +3,8 @@ import { ButtonComponent } from '@/app/shared';
 import { FormDirective } from '@/app/shared/directives/form';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AuthStore } from '@/app/core/store/auth.store';
-import { ToastService } from '@/app/core/Services';
 import { Router } from '@angular/router';
+import { ToastService } from '@/app/shared/toast.service';
 
 @Component({
   selector: 'app-register',
