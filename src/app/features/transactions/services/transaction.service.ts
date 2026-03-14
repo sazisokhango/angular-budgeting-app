@@ -16,16 +16,19 @@ import { SpendByMonthModel } from '@/app/core/models/spendByMonth.model';
 })
 export class TransactionService {
   private readonly baseUrl = `${environment.apiUrl}/transactions`;
-  private readonly transactionSummaryUrl =  `${this.baseUrl}/summary`;
-  private readonly monthlySummaryUrl =  `${this.baseUrl}/monthly-summary`;
+  private readonly transactionSummaryUrl = `${this.baseUrl}/summary`;
+  private readonly monthlySummaryUrl = `${this.baseUrl}/monthly-summary`;
   private readonly categoryUrl = `${this.baseUrl}/category`;
   private readonly budgetUrl = `${this.baseUrl}/budget`;
-
 
   private readonly httpClient = inject(HttpClient);
 
   public getTransactions(): Observable<TransactionModel[]> {
     return this.httpClient.get<TransactionModel[]>(this.baseUrl);
+  }
+
+  public getTransactionsByCategory(accountId: string): Observable<TransactionModel[]> {
+    return this.httpClient.get<TransactionModel[]>(this.baseUrl + '/' + accountId);
   }
 
   public getCategories(): Observable<CategoryModel[]> {
@@ -52,10 +55,10 @@ export class TransactionService {
   }
 
   public getTransactionSummary(): Observable<SummaryModel> {
-    return this.httpClient.get<SummaryModel>(this.transactionSummaryUrl)
+    return this.httpClient.get<SummaryModel>(this.transactionSummaryUrl);
   }
 
   public getMonthlySummary(): Observable<SpendByMonthModel[]> {
-    return this.httpClient.get<SpendByMonthModel[]>(this.monthlySummaryUrl)
+    return this.httpClient.get<SpendByMonthModel[]>(this.monthlySummaryUrl);
   }
 }
