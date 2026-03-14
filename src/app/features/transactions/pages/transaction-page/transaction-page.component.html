@@ -23,8 +23,6 @@
     </span>
   </span>
 </button>
-} @empty {
-<p class="text-gray-400 italic">No accounts found.</p>
 } @if (transactionsList()?.length) {
 <app-transaction-table
   (editTransactionRequested)="requestTransactionEdit($event)"

@@ -26,8 +26,9 @@ export class LoginComponent {
     }
 
     this.store.login(loginRequest).subscribe({
-      next: () => {
-        this.toastService.add('Login Successful', 'success', 4000)
+      next: (data) => {
+        this.toastService.add('Login Successful', 'success', 4000);
+        localStorage.setItem('token', data.token);
         this.route.navigate(['/home']);
       },
       complete: () => this.isLoading.set(false)
