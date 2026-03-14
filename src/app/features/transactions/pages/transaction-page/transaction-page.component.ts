@@ -1,12 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 
 import { ConfirmDialogComponent, Drawer } from '@/app/shared';
-import { TransactionModel } from '@/app/core/models';
+import { AccountResponseModel, TransactionModel } from '@/app/core/models';
 import { TransactionTableComponent } from '../../components/transaction-table/transaction-table.component';
 import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
 import { EditTransactionComponent } from '../edit-transaction/edit-transaction.component';
 import { TransactionStore } from '../../store/transaction.store';
-import { ToastService } from '@/app/core/Services';
+import { AccountStore } from '@/app/core/store';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ToastService } from '@/app/shared/toast.service';
 
 @Component({
   selector: 'app-transactions-page',
@@ -22,14 +24,19 @@ import { ToastService } from '@/app/core/Services';
 })
 export class TransactionsComponent {
   protected readonly store = inject(TransactionStore);
+  protected readonly accountStore = inject(AccountStore);
+  protected readonly toast = inject(ToastService);
 
   public readonly selectedTransaction = signal<TransactionModel | null>(null);
   protected readonly isDeleteConfirmed = signal(false);
   public readonly showConfirmation = signal(false);
+  protected transactionsList = signal<TransactionModel[] | null>(null);
   public isDrawerOpen = signal(false);
+  protected transactionsInAccount = signal(false);
 
-
-  protected readonly toast = inject(ToastService);
+  protected readonly accounts = toSignal(this.accountStore.getAccounts(), {
+    initialValue: [] as AccountResponseModel[],
+  });
 
   public drawerMode: 'new-mode' | 'edit-mode' | 'none' = 'none';
 
@@ -86,5 +93,20 @@ export class TransactionsComponent {
         },
       });
     }
+  }
+
+  selectAccount(accountId: string) {
+    this.transactionsList.set([])
+    this.store.transactionsByCategory(accountId).subscribe({
+      next: (data) => {
+        this.transactionsList.update(t => t = data);
+        this.transactionsInAccount.update(t => t = true)
+      },
+      error: error => {
+        if (error.status === 404) {
+          this.transactionsInAccount.update(t => t = false)
+        }
+      }
+    });
   }
 }
