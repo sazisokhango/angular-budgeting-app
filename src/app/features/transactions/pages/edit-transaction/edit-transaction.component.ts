@@ -3,7 +3,7 @@ import { ButtonComponent } from '@/app/shared';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TransactionStore } from '../../store/transaction.store';
-import { ToastService } from '@/app/core/Services';
+import { ToastService } from '@/app/shared/toast.service';
 
 @Component({
   selector: 'app-edit-transaction',

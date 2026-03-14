@@ -10,11 +10,11 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
   private readonly baseUrl = `${environment.apiUrl}/auth`;
   private readonly registerUrl = this.baseUrl + '/register';
-  private readonly loginUrl = this.baseUrl + 'login';
+  private readonly loginUrl = this.baseUrl + '/login';
 
   private readonly httpClient = inject(HttpClient);
 
-  public registerUser(userRequest: UserRequestModel): Observable<UserResponseModel> {
+  public registerUser(userRequest: Readonly<FormData>): Observable<UserResponseModel> {
     return this.httpClient.post<UserResponseModel>(this.registerUrl, userRequest);
   }
 

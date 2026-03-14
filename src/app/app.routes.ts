@@ -18,6 +18,16 @@ export const routes: Routes = [
           import('@/app/features/register/register.component').then((r) => r.RegisterComponent),
       },
       {
+        path: 'login',
+        loadComponent: () =>
+          import('@/app/features/login/login.component').then((r) => r.LoginComponent),
+      },
+      {
+        path: 'account',
+        loadComponent: () =>
+          import('@/app/features/account/account.component').then((r) => r.AccountAccount),
+      },
+      {
         path: 'home',
         loadComponent: () =>
           import('@/app/features/home/home.component').then((r) => r.HomeComponent),

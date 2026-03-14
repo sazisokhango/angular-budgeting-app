@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { catchError, EMPTY, tap, throwError } from 'rxjs';
 import { TransactionService } from '../services';
-import { ToastService } from '@/app/core/Services';
 import { TransactionModel, TransactionRequestModel } from '@/app/core/models';
+import { ToastService } from '@/app/shared/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,21 @@ export class TransactionStore {
           return EMPTY;
         })
       ),
-  });
+  }); 
+
+  transactionsByCategory(accountId: Readonly<string>) {
+    return this.service.getTransactionsByCategory(accountId).pipe(
+      tap(() => {
+       this.reload();
+      }),
+      catchError((error) => {
+        if(error.status !== 404) {
+          this.toastService.add('Error fetching the Transaction', 'error', 3000);
+        }
+        return throwError(() => error);
+      })
+    );
+  }
 
   readonly categories = rxResource({
     stream: () =>

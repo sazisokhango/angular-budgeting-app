@@ -1,5 +1,6 @@
 
 export interface TransactionRequestModel {
+    accountId: string,
     occurredAt: String,
     amount: number,
     reference: string,

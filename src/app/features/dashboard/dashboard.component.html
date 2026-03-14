@@ -7,8 +7,11 @@
       <img src="budget-buddy.png" class="h-20 w-auto" />
     </a>
   </div>
-
-  <a routerLink="register">Register</a>
+  @if (!isAlreadyLoggedIn && isRegistration()) {
+  <a routerLink="register" (click)="toggleRegistration()">Register</a>
+  } @else {
+  <a routerLink="login" (click)="toggleRegistration()">Login</a>
+  }
 </nav>
 
 <div class="flex h-[calc(100vh-50px)] mt-[72px]">
