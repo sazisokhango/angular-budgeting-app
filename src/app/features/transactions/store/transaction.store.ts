@@ -51,7 +51,6 @@ export class TransactionStore {
     stream: () =>
       this.service.getCategories().pipe(
         catchError((error) => {
-          console.error(error);
           this.toastService.add('Error fetching the Categories', 'error', 3000);
           return EMPTY;
         })
@@ -63,7 +62,7 @@ export class TransactionStore {
     stream: () =>
       this.service.getBudgets().pipe(
         catchError((error) => {
-          console.log(error), this.toastService.add('Error fetching the Budget', 'error', 3000);
+          this.toastService.add('Error fetching the Budget', 'error', 3000);
           return EMPTY;
         })
       ),
