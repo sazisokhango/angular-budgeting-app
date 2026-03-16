@@ -9,6 +9,8 @@
   </div>
   @if (!isAlreadyLoggedIn && isRegistration()) {
   <a routerLink="register" (click)="toggleRegistration()">Register</a>
+  } @else if(!isAlreadyLoggedIn) {
+    <a routerLink="" (click)="logout()">logout</a>
   } @else {
   <a routerLink="login" (click)="toggleRegistration()">Login</a>
   }
