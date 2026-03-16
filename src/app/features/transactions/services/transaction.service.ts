@@ -27,7 +27,7 @@ export class TransactionService {
     return this.httpClient.get<TransactionModel[]>(this.baseUrl);
   }
 
-  public getTransactionsByCategory(accountId: string): Observable<TransactionModel[]> {
+  public getTransactionsByAccount(accountId: string): Observable<TransactionModel[]> {
     return this.httpClient.get<TransactionModel[]>(this.baseUrl + '/' + accountId);
   }
 

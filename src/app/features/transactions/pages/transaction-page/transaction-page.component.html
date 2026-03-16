@@ -23,16 +23,18 @@
     </span>
   </span>
 </button>
-} @if (transactionsList()?.length) {
+} @if (transactionsList().length > 0) {
 <app-transaction-table
   (editTransactionRequested)="requestTransactionEdit($event)"
   (deleteTransactionRequested)="requestTransactionDelete($event)"
-  [tableData]="transactionsList()!"
+  [tableData]="transactionsList()"
   [showActionButtons]="true"
 />
 } @else if(store.transactions.isLoading()){
 <p>Loading Transactions...</p>
-} @else if(!transactionsInAccount()) {
+} @else if(!isAccountSelected()) {
+  <p>Please select an account</p>  
+} @else if(!transactionsInAccount() && isAccountSelected()) {
   <p>No Transactions for this account</p>  
 }
 @else {
@@ -46,6 +48,7 @@
 <app-drawer (closeDrawer)="onOpen()" title="Edit Transaction">
   <app-edit-transaction
     [transaction]="selectedTransaction()"
+    [accountList]="accounts()"
     (transactionRefresher)="refreshTransaction()"
   ></app-edit-transaction>
 </app-drawer>

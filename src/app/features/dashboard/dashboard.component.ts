@@ -20,4 +20,9 @@ export class DashboardComponent {
   toggleRegistration() {
     this.isRegistration.update((t) => (t = !t));
   }
+
+  protected logout() {
+    localStorage.clear();
+    this.isRegistration.set(false)
+  }
 }

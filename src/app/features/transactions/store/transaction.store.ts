@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { catchError, EMPTY, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, of, tap, throwError } from 'rxjs';
 import { TransactionService } from '../services';
 import { TransactionModel, TransactionRequestModel } from '@/app/core/models';
 import { ToastService } from '@/app/shared/toast.service';
@@ -11,6 +11,11 @@ import { ToastService } from '@/app/shared/toast.service';
 export class TransactionStore {
   private readonly service = inject(TransactionService);
   private readonly toastService = inject(ToastService);
+  private readonly selectedAccountId = signal<string | null>(null);
+
+  public setAccount(accountId: string) {
+    this.selectedAccountId.set(accountId);
+  }
 
   readonly transactions = rxResource({
     stream: () =>
@@ -20,21 +25,27 @@ export class TransactionStore {
           return EMPTY;
         })
       ),
-  }); 
+  });
 
-  transactionsByCategory(accountId: Readonly<string>) {
-    return this.service.getTransactionsByCategory(accountId).pipe(
-      tap(() => {
-       this.reload();
-      }),
-      catchError((error) => {
-        if(error.status !== 404) {
+  readonly transactionsByAccount = rxResource({
+    stream: () => {
+      const id = this.selectedAccountId();
+      if (!id) {
+        return of([]);
+      }
+  
+      return this.service.getTransactionsByAccount(id).pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            return of([]);
+          }
           this.toastService.add('Error fetching the Transaction', 'error', 3000);
-        }
-        return throwError(() => error);
-      })
-    );
-  }
+          return EMPTY;
+        })
+      );
+    },
+    defaultValue: [],
+  });
 
   readonly categories = rxResource({
     stream: () =>
@@ -61,9 +72,7 @@ export class TransactionStore {
 
   createTransaction(request: Readonly<TransactionRequestModel>) {
     return this.service.createTransaction(request).pipe(
-      tap(() => {
-       this.reload();
-      }),
+      this.reloadAfter(),
       catchError((error) => {
         this.toastService.add('Error creating Transaction', 'error', 3000);
         return throwError(() => error);
@@ -73,9 +82,7 @@ export class TransactionStore {
 
   editTransaction(body: Readonly<TransactionModel>) {
     return this.service.updateTransaction(body).pipe(
-      tap(() => {
-       this.reload();
-      }),
+      this.reloadAfter(),
       catchError((error) => {
         this.toastService.add('Error updating the Transaction', 'error', 3000);
         return throwError(() => error);
@@ -85,9 +92,7 @@ export class TransactionStore {
 
   deleteTransaction(id: Readonly<string>) {
     return this.service.deleteTransaction(id).pipe(
-      tap(() => {
-       this.reload()
-      }),
+      this.reloadAfter(),
       catchError((error) => {
         this.toastService.add('Error deleting the Transaction', 'error', 3000);
         return throwError(() => error);
@@ -115,9 +120,14 @@ export class TransactionStore {
       ),
   });
 
+  private reloadAfter() {
+    return tap(() => this.reload());
+  }
+
   private reload() {
     this.transactions.reload();
     this.dashboardSummary.reload();
     this.monthlySummary.reload();
+    this.transactionsByAccount.reload()
   }
 }

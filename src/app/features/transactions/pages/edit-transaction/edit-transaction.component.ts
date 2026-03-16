@@ -1,9 +1,10 @@
-import { TransactionModel } from '@/app/core/models';
+import { AccountResponseModel, TransactionModel } from '@/app/core/models';
 import { ButtonComponent } from '@/app/shared';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TransactionStore } from '../../store/transaction.store';
 import { ToastService } from '@/app/shared/toast.service';
+import { AccountStore } from '@/app/core/store';
 
 @Component({
   selector: 'app-edit-transaction',
@@ -14,6 +15,8 @@ export class EditTransactionComponent {
   protected readonly transactionRefresher = output<void>();
   protected readonly store = inject(TransactionStore);
   protected readonly toast = inject(ToastService);
+  protected readonly accountStore = inject(AccountStore);
+  public readonly accountList = input.required<AccountResponseModel[]>();
   public readonly transaction = input.required<TransactionModel | null>();
 
   protected readonly hasError = signal(false);
@@ -25,6 +28,7 @@ export class EditTransactionComponent {
   protected readonly description = signal<string>('');
   protected readonly budget = signal<number | null>(null);
   protected readonly category = signal<number | null>(null);
+  protected readonly account = signal<string>('')
 
   constructor() {
     effect(() => {
@@ -36,6 +40,7 @@ export class EditTransactionComponent {
         this.description.set(tx.description);
         this.budget.set(tx.budget.id);
         this.category.set(tx.category.id);
+        this.account.set(tx.accountId)
       }
     });
   }
@@ -58,6 +63,7 @@ export class EditTransactionComponent {
 
     const transaction: TransactionModel = {
       transactionId: tx.transactionId,
+      accountId: this.account(),
       amount: this.amount(),
       reference: this.reference(),
       occurredAt: this.occurredAt(),

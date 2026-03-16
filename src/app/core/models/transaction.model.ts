@@ -2,7 +2,8 @@ import { BudgetModel } from './budget.model';
 import { CategoryModel } from './category.model';
 
 export interface TransactionModel {
-  transactionId: string
+  transactionId: string;
+  accountId: string;
   occurredAt: Date;
   amount: number;
   reference: string;

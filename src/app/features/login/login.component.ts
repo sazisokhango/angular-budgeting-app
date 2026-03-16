@@ -20,6 +20,7 @@ export class LoginComponent {
   protected readonly toastService = inject(ToastService)
 
   onLoginUser(form: NgForm) {
+    localStorage.clear();
     this.isLoading.set(true)
     const loginRequest: UserLoginRequest = {
       ...form.form.value
