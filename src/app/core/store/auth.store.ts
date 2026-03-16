@@ -23,7 +23,7 @@ export class AuthStore {
   login(request: Readonly<UserLoginRequest>) {
     return this.service.userLogin(request).pipe(
       catchError((error) => {
-        this.toastService.add('Invali User Credentials', 'error', 3000);
+        this.toastService.add('Invalid User Credentials', 'error', 3000);
         return throwError(() => error);
       })
     );
