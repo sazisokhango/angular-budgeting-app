@@ -1,19 +1,20 @@
 <nav
   class="fixed top-0 left-0 z-50 flex items-center justify-between w-full h-[73px] px-4 bg-[#e0e0e0]"
 >
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-3">
     <button class="md:hidden" (click)="isSidebarOpen = !isSidebarOpen">☰</button>
     <a routerLink="home">
       <img src="budget-buddy.png" class="h-20 w-auto" />
     </a>
   </div>
-  @if (!isAlreadyLoggedIn && isRegistration()) {
-  <a routerLink="register" (click)="toggleRegistration()">Register</a>
-  } @else if(!isAlreadyLoggedIn) {
-    <a routerLink="" (click)="logout()">logout</a>
-  } @else {
-  <a routerLink="login" (click)="toggleRegistration()">Login</a>
-  }
+  <div class="">
+    @if (authStore.isAuthenticated()) {
+    <a routerLink="" (click)="authStore.logout()">logout</a>
+    } @else{
+    <a routerLink="login" class="hover:underline">Login</a>
+    <a routerLink="register" class="px-3 hover:underline">Register</a>
+    }
+  </div>
 </nav>
 
 <div class="flex h-[calc(100vh-50px)] mt-[72px]">
