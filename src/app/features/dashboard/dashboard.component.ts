@@ -1,8 +1,9 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 import { Footer } from '@/app/features/footer';
 import { ToastComponent } from '@/app/shared';
+import { AuthStore } from '@/app/core/store';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,19 +11,7 @@ import { ToastComponent } from '@/app/shared';
   imports: [RouterLink, RouterOutlet, Footer, ToastComponent],
 })
 export class DashboardComponent {
+
+  protected readonly authStore = inject(AuthStore);
   protected isSidebarOpen: boolean = false;
-  protected isRegistration = signal(true);
-
-  protected get isAlreadyLoggedIn(): boolean {
-    return localStorage.getItem('token') !== null;
-  }
-
-  toggleRegistration() {
-    this.isRegistration.update((t) => (t = !t));
-  }
-
-  protected logout() {
-    localStorage.clear();
-    this.isRegistration.set(false)
-  }
 }
