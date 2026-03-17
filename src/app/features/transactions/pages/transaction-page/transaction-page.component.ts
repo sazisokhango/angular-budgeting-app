@@ -102,6 +102,5 @@ export class TransactionsComponent {
   selectAccount(accountId: string) {
     this.isAccountSelected.set(true);
     this.store.setAccount(accountId);
-    this.store.transactionsByAccount.reload();
   }
 }
