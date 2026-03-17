@@ -4,6 +4,7 @@ import { catchError, EMPTY, of, tap, throwError } from 'rxjs';
 import { TransactionService } from '../services';
 import { TransactionModel, TransactionRequestModel } from '@/app/core/models';
 import { ToastService } from '@/app/shared/toast.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class TransactionStore {
   private readonly selectedAccountId = signal<string | null>(null);
 
   public setAccount(accountId: string) {
+    this.transactionsByAccount.reload();
     this.selectedAccountId.set(accountId);
   }
 
@@ -21,7 +23,7 @@ export class TransactionStore {
     stream: () =>
       this.service.getTransactions().pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the Transactions', 'error', 3000);
+          this.showErrorMessages('Error fetching the Transactions', 'error', error);
           return EMPTY;
         })
       ),
@@ -33,13 +35,13 @@ export class TransactionStore {
       if (!id) {
         return of([]);
       }
-  
+
       return this.service.getTransactionsByAccount(id).pipe(
         catchError((error) => {
           if (error.status === 404) {
             return of([]);
           }
-          this.toastService.add('Error fetching the Transaction', 'error', 3000);
+          this.showErrorMessages('Error deleting the Transaction', 'error', error);
           return EMPTY;
         })
       );
@@ -51,7 +53,7 @@ export class TransactionStore {
     stream: () =>
       this.service.getCategories().pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the Categories', 'error', 3000);
+          this.showErrorMessages('Error fetching the Categories', 'error', error);
           return EMPTY;
         })
       ),
@@ -62,7 +64,7 @@ export class TransactionStore {
     stream: () =>
       this.service.getBudgets().pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the Budget', 'error', 3000);
+          this.showErrorMessages('Error fetching the Budget', 'error', error);
           return EMPTY;
         })
       ),
@@ -73,7 +75,7 @@ export class TransactionStore {
     return this.service.createTransaction(request).pipe(
       this.reloadAfter(),
       catchError((error) => {
-        this.toastService.add('Error creating Transaction', 'error', 3000);
+        this.showErrorMessages('Error creating Transaction', 'error', error);
         return throwError(() => error);
       })
     );
@@ -83,7 +85,7 @@ export class TransactionStore {
     return this.service.updateTransaction(body).pipe(
       this.reloadAfter(),
       catchError((error) => {
-        this.toastService.add('Error updating the Transaction', 'error', 3000);
+        this.showErrorMessages('Error updating the Transaction', 'error', error);
         return throwError(() => error);
       })
     );
@@ -93,7 +95,7 @@ export class TransactionStore {
     return this.service.deleteTransaction(id).pipe(
       this.reloadAfter(),
       catchError((error) => {
-        this.toastService.add('Error deleting the Transaction', 'error', 3000);
+        this.showErrorMessages('Error deleting the Transaction', 'error', error);
         return throwError(() => error);
       })
     );
@@ -103,7 +105,7 @@ export class TransactionStore {
     stream: () =>
       this.service.getTransactionSummary().pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the transaction summary', 'error', 3000);
+          this.showErrorMessages('Error fetching the transaction summary', 'error', error);
           return EMPTY;
         })
       ),
@@ -113,11 +115,22 @@ export class TransactionStore {
     stream: () =>
       this.service.getMonthlySummary().pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the monthly transaction summary', 'error', 3000);
+          this.showErrorMessages('Error fetching the monthly transaction summary', 'error', error);
           return EMPTY;
         })
       ),
   });
+
+  private showErrorMessages(
+    message: string,
+    errorType: 'error' | 'success',
+    error: HttpErrorResponse,
+    duration: number = 3000
+  ) {
+    if (error.status !== 403) {
+      this.toastService.add(message, errorType, duration);
+    }
+  }
 
   private reloadAfter() {
     return tap(() => this.reload());
@@ -127,6 +140,6 @@ export class TransactionStore {
     this.transactions.reload();
     this.dashboardSummary.reload();
     this.monthlySummary.reload();
-    this.transactionsByAccount.reload()
+    this.transactionsByAccount.reload();
   }
 }
