@@ -4,6 +4,7 @@ import { TransactionModel } from '@/app/core/models';
 import { ChartComponent } from '@/app/shared';
 import { TransactionStore } from '../transactions/store/transaction.store';
 import { SpendByMonthModel } from '@/app/core/models/spendByMonth.model';
+import { AuthStore } from '@/app/core/store';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ import { SpendByMonthModel } from '@/app/core/models/spendByMonth.model';
 export class HomeComponent {
   protected spendByMonthData = signal<SpendByMonthModel[]>([]);
   protected readonly store = inject(TransactionStore);
+  protected readonly authStore = inject(AuthStore);
 
   protected readonly transactionList = computed<TransactionModel[]>(
     () => this.store.transactions.value() ?? []
