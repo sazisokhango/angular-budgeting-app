@@ -20,9 +20,6 @@ export class HomeComponent {
   protected readonly store = inject(TransactionStore);
   protected readonly authStore = inject(AuthStore);
 
-  protected readonly accounts = toSignal(this.accountStore.getAccounts(), {
-    initialValue: [] as AccountResponseModel[],
-  });
 
   protected readonly transactionList = computed<TransactionModel[]>(
     () => this.store.transactionsByAccount.value() ?? []

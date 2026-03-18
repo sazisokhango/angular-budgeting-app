@@ -1,6 +1,6 @@
 <h1 class="text-center text-2xl md:text-5xl">Welcome to the Budgeting app</h1>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-  @for (item of accounts(); track item.id) {
+  @for (item of accountStore.accounts(); track item.id) {
   <button
     type="button"
     (click)="selectAccount(item.id)"

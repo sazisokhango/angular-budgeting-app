@@ -3,9 +3,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ButtonComponent } from '@/app/shared';
 import { TransactionStore } from '../../store/transaction.store';
 import { FormDirective } from '@/app/shared/directives/form';
-import { AccountResponseModel, TransactionRequestModel } from '@/app/core/models';
+import { TransactionRequestModel } from '@/app/core/models';
 import { AccountStore } from '@/app/core/store';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from '@/app/shared/toast.service';
 
 @Component({
@@ -17,24 +16,13 @@ export class NewTransactionComponent {
   public readonly transactionRefresher = output<void>();
 
   protected readonly store = inject(TransactionStore);
-  protected readonly accountStore = inject(AccountStore)
+  protected readonly accountStore = inject(AccountStore);
   private readonly toast = inject(ToastService);
 
   protected readonly hasError = signal(false);
   public readonly isLoading = signal(false);
 
   protected readonly formValue = signal<any>({});
-
-  protected readonly accounts = toSignal(this.accountStore.getAccounts(), {
-    initialValue: [] as AccountResponseModel[],
-  });
-
-
-  // constructor() {
-  //   effect(() => {
-  //     console.log(this.formValue());
-  //   });
-  // }
 
   onSubmitTransaction(form: NgForm) {
     this.isLoading.set(true);
@@ -60,6 +48,7 @@ export class NewTransactionComponent {
         this.isLoading.set(false);
         this.hasError.set(true);
       },
+      complete: () => this.accountStore.reloadAccounts(),
     });
   }
 }

@@ -14,7 +14,7 @@ export class AuthStore {
   private readonly router = inject(Router);
   public readonly token = signal<String | null>(localStorage.getItem('token'));
   public readonly isAuthenticated = computed(() => {
-    return this.token() !== null
+    return this.token() !== null;
   });
 
   login(request: Readonly<UserLoginRequest>) {
@@ -22,21 +22,19 @@ export class AuthStore {
       tap((response) => {
         localStorage.setItem('token', response.token);
         this.token.set(response.token);
-        
       }),
       catchError((error) => {
         this.toastService.add('Invalid User Credentials', 'error', 3000);
         return throwError(() => error);
-      })
+      }),
     );
   }
 
   logout() {
     localStorage.removeItem('token');
-    this.token.update(t => t = null);
+    this.token.update((t) => (t = null));
     this.router.navigate(['/login']);
     this.toastService.add('Logged out successfully', 'success', 2000);
-
   }
 
   createNewUser(request: Readonly<FormData>) {
