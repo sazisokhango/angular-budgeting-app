@@ -9,6 +9,7 @@ import { TransactionStore } from '../../store/transaction.store';
 import { AccountStore } from '@/app/core/store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from '@/app/shared/toast.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transactions-page',
@@ -20,6 +21,7 @@ import { ToastService } from '@/app/shared/toast.service';
     Drawer,
     EditTransactionComponent,
     ConfirmDialogComponent,
+    CommonModule
   ],
 })
 export class TransactionsComponent {

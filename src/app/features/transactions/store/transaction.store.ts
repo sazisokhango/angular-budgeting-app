@@ -5,6 +5,7 @@ import { TransactionService } from '../services';
 import { TransactionModel, TransactionRequestModel } from '@/app/core/models';
 import { ToastService } from '@/app/shared/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SummaryModel } from '@/app/core/models/summary,model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,10 @@ export class TransactionStore {
   private readonly selectedAccountId = signal<string | null>(null);
 
   public setAccount(accountId: string) {
-    this.transactionsByAccount.reload();
     this.selectedAccountId.set(accountId);
+    this.transactionsByAccount.reload();
+    this.dashboardSummary.reload();
+    this.monthlySummary.reload();
   }
 
   readonly transactions = rxResource({
@@ -102,23 +105,50 @@ export class TransactionStore {
   }
 
   readonly dashboardSummary = rxResource({
-    stream: () =>
-      this.service.getTransactionSummary().pipe(
+    stream: () => {
+      const id = this.selectedAccountId();
+      if (!id) {
+        return of(null);
+      }
+
+      return this.service.getTransactionSummary(id).pipe(
         catchError((error) => {
+          if (error.status === 404) {
+            return of(null);
+          }
           this.showErrorMessages('Error fetching the transaction summary', 'error', error);
           return EMPTY;
         })
-      ),
+      );
+    },
+    defaultValue: {
+      totalIncome: 0,
+      totalExpenses: 0,
+      netBalance: 0,
+      totalTransactions: 0,
+      pendingTransactions: 0,
+      spendByCategory: [],
+    } as SummaryModel,
   });
 
   readonly monthlySummary = rxResource({
-    stream: () =>
-      this.service.getMonthlySummary().pipe(
+    stream: () => {
+      const id = this.selectedAccountId();
+      if (!id) {
+        return of([]);
+      }
+
+      return this.service.getMonthlySummary(id).pipe(
         catchError((error) => {
+          if (error.status === 404) {
+            return of([]);
+          }
           this.showErrorMessages('Error fetching the monthly transaction summary', 'error', error);
           return EMPTY;
         })
-      ),
+      );
+    },
+    defaultValue: [],
   });
 
   private showErrorMessages(
