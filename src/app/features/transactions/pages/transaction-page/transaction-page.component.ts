@@ -1,13 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 
 import { ConfirmDialogComponent, Drawer } from '@/app/shared';
-import { AccountResponseModel, TransactionModel } from '@/app/core/models';
+import { TransactionModel } from '@/app/core/models';
 import { TransactionTableComponent } from '../../components/transaction-table/transaction-table.component';
 import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
 import { EditTransactionComponent } from '../edit-transaction/edit-transaction.component';
 import { TransactionStore } from '../../store/transaction.store';
 import { AccountStore } from '@/app/core/store';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from '@/app/shared/toast.service';
 import { CommonModule } from '@angular/common';
 
@@ -41,9 +40,6 @@ export class TransactionsComponent {
   });
   protected isAccountSelected = signal(false);
 
-  protected readonly accounts = toSignal(this.accountStore.getAccounts(), {
-    initialValue: [] as AccountResponseModel[],
-  });
 
   public drawerMode: 'new-mode' | 'edit-mode' | 'none' = 'none';
 

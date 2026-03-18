@@ -7,7 +7,7 @@
   New Transaction
 </button>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 - mb-4">
-  @for (item of accounts(); track item.id) {
+  @for (item of accountStore.accounts(); track item.id) {
   <button
     type="button"
     (click)="selectAccount(item.id)"
@@ -52,7 +52,7 @@
 <app-drawer (closeDrawer)="onOpen()" title="Edit Transaction">
   <app-edit-transaction
     [transaction]="selectedTransaction()"
-    [accountList]="accounts()"
+    [accountList]="accountStore.accounts()"
     (transactionRefresher)="refreshTransaction()"
   ></app-edit-transaction>
 </app-drawer>

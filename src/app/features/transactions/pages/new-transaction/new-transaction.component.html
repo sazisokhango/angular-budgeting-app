@@ -14,7 +14,7 @@
     id=""
     class="w-xs rounded-sm border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
   >
-    @for (item of accounts() ; track item.id) {
+    @for (item of accountStore.accounts() ; track item.id) {
     <option [value]="item.id">{{ item.name }}</option>
     }
   </select>
