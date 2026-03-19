@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { DashboardComponent } from './features/dashboard';
+import { authGuard } from './core/guards';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,7 @@ export const routes: Routes = [
         path: 'home',
         loadComponent: () =>
           import('@/app/features/home/home.component').then((r) => r.HomeComponent),
+        canActivate: [authGuard],
       },
       {
         path: 'transactions',
@@ -38,6 +40,7 @@ export const routes: Routes = [
           import('@/app/features/transactions/transaction.routes').then(
             (r) => r.TRANSACTION_ROUTES
           ),
+        canActivate: [authGuard],
       },
     ],
   },

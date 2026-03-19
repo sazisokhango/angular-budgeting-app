@@ -17,7 +17,7 @@ export class AuthStore {
     return this.token() !== null;
   });
 
-  login(request: Readonly<UserLoginRequest>) {
+  public login(request: Readonly<UserLoginRequest>) {
     return this.service.userLogin(request).pipe(
       tap((response) => {
         localStorage.setItem('token', response.token);
@@ -30,7 +30,7 @@ export class AuthStore {
     );
   }
 
-  logout() {
+  public logout() {
     localStorage.removeItem('token');
     this.token.update((t) => (t = null));
     this.router.navigate(['/login']);
