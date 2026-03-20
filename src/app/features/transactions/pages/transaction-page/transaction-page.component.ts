@@ -1,14 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 
 import { ConfirmDialogComponent, Drawer } from '@/app/shared';
-import { AccountResponseModel, TransactionModel } from '@/app/core/models';
+import { TransactionModel } from '@/app/core/models';
 import { TransactionTableComponent } from '../../components/transaction-table/transaction-table.component';
 import { NewTransactionComponent } from '../new-transaction/new-transaction.component';
 import { EditTransactionComponent } from '../edit-transaction/edit-transaction.component';
 import { TransactionStore } from '../../store/transaction.store';
 import { AccountStore } from '@/app/core/store';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ToastService } from '@/app/shared/toast.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transactions-page',
@@ -20,6 +20,7 @@ import { ToastService } from '@/app/shared/toast.service';
     Drawer,
     EditTransactionComponent,
     ConfirmDialogComponent,
+    CommonModule
   ],
 })
 export class TransactionsComponent {
@@ -30,18 +31,19 @@ export class TransactionsComponent {
   public readonly selectedTransaction = signal<TransactionModel | null>(null);
   protected readonly isDeleteConfirmed = signal(false);
   public readonly showConfirmation = signal(false);
-  protected transactionsList = signal<TransactionModel[] | null>(null);
-  public isDrawerOpen = signal(false);
-  protected transactionsInAccount = signal(false);
-
-  protected readonly accounts = toSignal(this.accountStore.getAccounts(), {
-    initialValue: [] as AccountResponseModel[],
+  protected readonly transactionsList = computed(() => {
+    return this.store.transactionsByAccount.value();
   });
+  public isDrawerOpen = signal(false);
+  protected transactionsInAccount = computed(() => {
+    return this.store.transactionsByAccount.value().length > 0;
+  });
+  protected isAccountSelected = signal(false);
+
 
   public drawerMode: 'new-mode' | 'edit-mode' | 'none' = 'none';
 
   refreshTransaction() {
-    this.store.transactions.reload();
     this.onClose();
   }
 
@@ -96,17 +98,7 @@ export class TransactionsComponent {
   }
 
   selectAccount(accountId: string) {
-    this.transactionsList.set([])
-    this.store.transactionsByCategory(accountId).subscribe({
-      next: (data) => {
-        this.transactionsList.update(t => t = data);
-        this.transactionsInAccount.update(t => t = true)
-      },
-      error: error => {
-        if (error.status === 404) {
-          this.transactionsInAccount.update(t => t = false)
-        }
-      }
-    });
+    this.isAccountSelected.set(true);
+    this.store.setAccount(accountId);
   }
 }

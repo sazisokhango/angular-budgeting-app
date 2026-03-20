@@ -27,7 +27,7 @@ export class TransactionService {
     return this.httpClient.get<TransactionModel[]>(this.baseUrl);
   }
 
-  public getTransactionsByCategory(accountId: string): Observable<TransactionModel[]> {
+  public getTransactionsByAccount(accountId: string): Observable<TransactionModel[]> {
     return this.httpClient.get<TransactionModel[]>(this.baseUrl + '/' + accountId);
   }
 
@@ -54,11 +54,11 @@ export class TransactionService {
     return this.httpClient.delete<void>(this.baseUrl, { params: { transactionId } });
   }
 
-  public getTransactionSummary(): Observable<SummaryModel> {
-    return this.httpClient.get<SummaryModel>(this.transactionSummaryUrl);
+  public getTransactionSummary(accountId: String): Observable<SummaryModel> {
+    return this.httpClient.get<SummaryModel>(this.transactionSummaryUrl + '/' + accountId);
   }
 
-  public getMonthlySummary(): Observable<SpendByMonthModel[]> {
-    return this.httpClient.get<SpendByMonthModel[]>(this.monthlySummaryUrl);
+  public getMonthlySummary(accountId: String): Observable<SpendByMonthModel[]> {
+    return this.httpClient.get<SpendByMonthModel[]>(this.monthlySummaryUrl + '/' + accountId);
   }
 }

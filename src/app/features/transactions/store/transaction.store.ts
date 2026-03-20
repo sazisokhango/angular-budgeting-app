@@ -1,9 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { catchError, EMPTY, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, of, tap, throwError } from 'rxjs';
 import { TransactionService } from '../services';
 import { TransactionModel, TransactionRequestModel } from '@/app/core/models';
 import { ToastService } from '@/app/shared/toast.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SummaryModel } from '@/app/core/models/summary,model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,37 +13,50 @@ import { ToastService } from '@/app/shared/toast.service';
 export class TransactionStore {
   private readonly service = inject(TransactionService);
   private readonly toastService = inject(ToastService);
+  private readonly selectedAccountId = signal<string | null>(null);
+
+  public setAccount(accountId: string) {
+    this.selectedAccountId.set(accountId);
+    this.transactionsByAccount.reload();
+    this.dashboardSummary.reload();
+    this.monthlySummary.reload();
+  }
 
   readonly transactions = rxResource({
     stream: () =>
       this.service.getTransactions().pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the Transactions', 'error', 3000);
+          this.showErrorMessages('Error fetching the Transactions', 'error', error);
           return EMPTY;
         })
       ),
-  }); 
+  });
 
-  transactionsByCategory(accountId: Readonly<string>) {
-    return this.service.getTransactionsByCategory(accountId).pipe(
-      tap(() => {
-       this.reload();
-      }),
-      catchError((error) => {
-        if(error.status !== 404) {
-          this.toastService.add('Error fetching the Transaction', 'error', 3000);
-        }
-        return throwError(() => error);
-      })
-    );
-  }
+  readonly transactionsByAccount = rxResource({
+    stream: () => {
+      const id = this.selectedAccountId();
+      if (!id) {
+        return of([]);
+      }
+
+      return this.service.getTransactionsByAccount(id).pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            return of([]);
+          }
+          this.showErrorMessages('Error deleting the Transaction', 'error', error);
+          return EMPTY;
+        })
+      );
+    },
+    defaultValue: [],
+  });
 
   readonly categories = rxResource({
     stream: () =>
       this.service.getCategories().pipe(
         catchError((error) => {
-          console.error(error);
-          this.toastService.add('Error fetching the Categories', 'error', 3000);
+          this.showErrorMessages('Error fetching the Categories', 'error', error);
           return EMPTY;
         })
       ),
@@ -52,7 +67,7 @@ export class TransactionStore {
     stream: () =>
       this.service.getBudgets().pipe(
         catchError((error) => {
-          console.log(error), this.toastService.add('Error fetching the Budget', 'error', 3000);
+          this.showErrorMessages('Error fetching the Budget', 'error', error);
           return EMPTY;
         })
       ),
@@ -61,11 +76,9 @@ export class TransactionStore {
 
   createTransaction(request: Readonly<TransactionRequestModel>) {
     return this.service.createTransaction(request).pipe(
-      tap(() => {
-       this.reload();
-      }),
+      this.reloadAfter(),
       catchError((error) => {
-        this.toastService.add('Error creating Transaction', 'error', 3000);
+        this.showErrorMessages('Error creating Transaction', 'error', error);
         return throwError(() => error);
       })
     );
@@ -73,11 +86,9 @@ export class TransactionStore {
 
   editTransaction(body: Readonly<TransactionModel>) {
     return this.service.updateTransaction(body).pipe(
-      tap(() => {
-       this.reload();
-      }),
+      this.reloadAfter(),
       catchError((error) => {
-        this.toastService.add('Error updating the Transaction', 'error', 3000);
+        this.showErrorMessages('Error updating the Transaction', 'error', error);
         return throwError(() => error);
       })
     );
@@ -85,39 +96,80 @@ export class TransactionStore {
 
   deleteTransaction(id: Readonly<string>) {
     return this.service.deleteTransaction(id).pipe(
-      tap(() => {
-       this.reload()
-      }),
+      this.reloadAfter(),
       catchError((error) => {
-        this.toastService.add('Error deleting the Transaction', 'error', 3000);
+        this.showErrorMessages('Error deleting the Transaction', 'error', error);
         return throwError(() => error);
       })
     );
   }
 
   readonly dashboardSummary = rxResource({
-    stream: () =>
-      this.service.getTransactionSummary().pipe(
+    stream: () => {
+      const id = this.selectedAccountId();
+      if (!id) {
+        return of(null);
+      }
+
+      return this.service.getTransactionSummary(id).pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the transaction summary', 'error', 3000);
+          if (error.status === 404) {
+            return of(null);
+          }
+          this.showErrorMessages('Error fetching the transaction summary', 'error', error);
           return EMPTY;
         })
-      ),
+      );
+    },
+    defaultValue: {
+      totalIncome: 0,
+      totalExpenses: 0,
+      netBalance: 0,
+      totalTransactions: 0,
+      pendingTransactions: 0,
+      spendByCategory: [],
+    } as SummaryModel,
   });
 
   readonly monthlySummary = rxResource({
-    stream: () =>
-      this.service.getMonthlySummary().pipe(
+    stream: () => {
+      const id = this.selectedAccountId();
+      if (!id) {
+        return of([]);
+      }
+
+      return this.service.getMonthlySummary(id).pipe(
         catchError((error) => {
-          this.toastService.add('Error fetching the monthly transaction summary', 'error', 3000);
+          if (error.status === 404) {
+            return of([]);
+          }
+          this.showErrorMessages('Error fetching the monthly transaction summary', 'error', error);
           return EMPTY;
         })
-      ),
+      );
+    },
+    defaultValue: [],
   });
+
+  private showErrorMessages(
+    message: string,
+    errorType: 'error' | 'success',
+    error: HttpErrorResponse,
+    duration: number = 3000
+  ) {
+    if (error.status !== 403) {
+      this.toastService.add(message, errorType, duration);
+    }
+  }
+
+  private reloadAfter() {
+    return tap(() => this.reload());
+  }
 
   private reload() {
     this.transactions.reload();
     this.dashboardSummary.reload();
     this.monthlySummary.reload();
+    this.transactionsByAccount.reload();
   }
 }

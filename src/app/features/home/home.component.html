@@ -1,5 +1,25 @@
 <h1 class="text-center text-2xl md:text-5xl">Welcome to the Budgeting app</h1>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+  @for (item of accountStore.accounts(); track item.id) {
+  <button
+    type="button"
+    (click)="selectAccount(item.id)"
+    class="flex items-center justify-between p-4 py-2 border-2 rounded-lg text-left transition-all hover:border-gray-400 focus:outline-none w-full"
+  >
+    <div class="flex flex-col">
+      <span class="font-semibold text-gray-800">{{ item.name }}</span>
+      <span class="text-xs text-gray-400">Account</span>
+    </div>
 
+    <span class="text-sm text-gray-500">
+      Balance:
+      <span class="font-mono font-medium text-gray-700">
+        {{ item.balance | currency : 'ZAR'}}
+      </span>
+    </span>
+  </button>
+  }
+</div>
 @if (transactionList().length > 0) {
 <p class="text-lg py-6">Transactions Summary</p>
 <app-transaction-table [tableData]="sortedList" [showActionButtons]="false" />
@@ -14,32 +34,42 @@
   </div>
   <div class="bg-white shadow-lg rounded-lg p-4">
     <h1>Total Income</h1>
-    <span class="text-green-600">{{ summary()?.totalIncome }}</span>
+    <span class="text-green-600">{{ summary()?.totalIncome | currency : 'ZAR'}}</span>
   </div>
   <div class="bg-white shadow-lg rounded-lg p-4">
     <h1>Total Expense</h1>
-    <span class="text-green-600">{{ summary()?.totalExpenses }}</span>
+    <span class="text-green-600">{{ summary()?.totalExpenses | currency : 'ZAR'}}</span>
   </div>
   <div class="bg-white shadow-lg rounded-lg p-4">
     <h1>Net Balance</h1>
-    <span class="text-green-600">{{ summary()?.netBalance }}</span>
+    <span class="text-green-600">{{ summary()?.netBalance | currency : 'ZAR'}}</span>
   </div>
 </div>
 <h1 class="text-center text-2xl md:text-4xl mb-4">Income vs Expense over time(Months)</h1>
-<app-chart [labels]="incomeVsExpenseLabels()" [datasets]="incomeVsExpenseChartData" title="Spending" [chartType]="'bar'" />
+<app-chart
+  [labels]="incomeVsExpenseLabels()"
+  [datasets]="incomeVsExpenseChartData"
+  title="Spending"
+  [chartType]="'bar'"
+/>
 <h1 class="text-center text-2xl md:text-4xl mb-4">Group By Category</h1>
-<app-chart [labels]="spendByCategoryLabels()" [datasets]="groupByCategoryData" title="Spending" [chartType]="'bar'" />
+<app-chart
+  [labels]="spendByCategoryLabels()"
+  [datasets]="groupByCategoryData"
+  title="Spending"
+  [chartType]="'bar'"
+/>
 <div class="pb-24">
   @for (cat of summary()?.spendByCategory; track $index){
   <div
     class="flex justify-between bg-gray-100 rounded-lg border-b border-gray-300 p-4 hover:shadow-lg hover:bg-blue-100"
   >
     <span>{{ cat.name }}</span>
-    <span>{{ cat.total }}</span>
+    <span>{{ cat.total | currency : 'ZAR' }}</span>
   </div>
   }
 </div>
 
-} @else {
+} @else if (authStore.isAuthenticated() && transactionList().length === 0) {
 <p class="pt-8">Transactions are not available</p>
 }
