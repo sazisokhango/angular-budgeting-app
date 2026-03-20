@@ -9,7 +9,28 @@
   </div>
   <div class="">
     @if (authStore.isAuthenticated()) {
-    <a routerLink="" (click)="authStore.logout()">logout</a>
+      <div class="relative inline-block text-left">
+        <button
+          type="button"
+          class="flex items-center rounded-full border border-gray-300 p-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          (click)="isDropdownOpen.set(!isDropdownOpen())"
+        >
+          <img [src]="avatarUrl" alt="Avatar" class="w-10 h-10 rounded-full" />
+        </button>
+      
+        @if(isDropdownOpen()) {
+          <div
+          class="absolute right-0 mt-2 w-36 bg-white shadow-lg rounded-md z-50"
+        >
+          <button
+            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+            (click)="authStore.logout()"
+          >
+          <fa-icon [icon]="faLogout"></fa-icon>Logout
+          </button>
+        </div>
+        }
+      </div>
     } @else{
     <a routerLink="login" class="hover:underline">Login</a>
     <a routerLink="register" class="px-3 hover:underline">Register</a>
