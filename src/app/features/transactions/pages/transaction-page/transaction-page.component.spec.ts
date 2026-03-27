@@ -3,6 +3,10 @@ import { TransactionsComponent } from '@/app/features/transactions';
 import { Component, input, output } from '@angular/core';
 import { of } from 'rxjs';
 import { TransactionStore } from '../../store/transaction.store';
+import { CommonModule } from '@angular/common';
+import { AccountStore } from '@/app/core/store';
+import { ToastService } from '@/app/shared/toast.service';
+import { TransactionModel } from '@/app/core/models';
 
 @Component({
   selector: 'app-transaction-table',
@@ -10,9 +14,10 @@ import { TransactionStore } from '../../store/transaction.store';
   standalone: true,
 })
 class TransactionTableStub {
-  tableData = input<any>();
+  tableData = input<TransactionModel>();
   editTransactionRequested = output<any>();
   deleteTransactionRequested = output<any>();
+  showActionButtons = input<boolean>();
 }
 
 //mocking a dialog component
@@ -31,7 +36,9 @@ class ConfirmDialogStub {
   template: '<ng-content></ng-content>',
   standalone: true,
 })
-class DrawerStub {}
+class DrawerStub {
+  closeDrawer = output<any>();
+}
 
 //mocking a edit transaction component
 @Component({
@@ -41,11 +48,13 @@ class DrawerStub {}
 })
 class EditTransactionStub {
   transaction = input<any>();
+  accountList = input<any>();
 }
 
 //mocking a transaction model
 const transactionMock = {
   transactionId: 'tx-1',
+  accountId: '1',
   amount: 100,
   reference: 'REF',
   description: 'desc',
@@ -56,11 +65,15 @@ const transactionMock = {
 
 //mocking transaction store
 const transactionStoreMock = {
+  transactionsByAccount: {
+    value: vi.fn().mockReturnValue([transactionMock]),
+  },
   transactions: {
-    value: () => [transactionMock],
     reload: vi.fn(),
+    isLoading: vi.fn().mockReturnValue(false),
   },
   deleteTransaction: vi.fn(() => of(void 0)),
+  setAccount: vi.fn(),
 };
 
 describe('Transaction page', () => {
@@ -72,11 +85,26 @@ describe('Transaction page', () => {
 
     await TestBed.configureTestingModule({
       imports: [TransactionsComponent],
-      providers: [{ provide: TransactionStore, useValue: transactionStoreMock }],
+      providers: [
+        { provide: TransactionStore, useValue: transactionStoreMock },
+        {
+          provide: AccountStore,
+          useValue: {
+            accounts: vi.fn().mockReturnValue([{ id: '1', name: 'Main', balance: 2000 }]),
+          },
+        },
+        { provide: ToastService, useValue: { add: vi.fn() } },
+      ],
     })
       .overrideComponent(TransactionsComponent, {
         set: {
-          imports: [TransactionTableStub, ConfirmDialogStub, DrawerStub, EditTransactionStub],
+          imports: [
+            CommonModule,
+            TransactionTableStub,
+            ConfirmDialogStub,
+            DrawerStub,
+            EditTransactionStub,
+          ],
         },
       })
       .compileComponents();
@@ -154,7 +182,6 @@ describe('Transaction page', () => {
 
     expect(transactionStoreMock.deleteTransaction).not.toHaveBeenCalled();
     expect(component.showConfirmation()).toBe(false);
-
   });
 
   it('should reload transactions after the delete', () => {
