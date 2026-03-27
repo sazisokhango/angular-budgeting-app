@@ -5,7 +5,8 @@ import { vi } from 'vitest';
 import { of } from 'rxjs';
 import { NewTransactionComponent } from '@/app/features/transactions'
 import { TransactionStore } from '../../store/transaction.store';
-import { ToastService } from '@/app/core/Services';
+import { ToastService } from '@/app/shared/toast.service';
+import { TransactionRequestModel } from '@/app/core/models';
 
 describe('NewTransactionComponent', () => {
   let fixture: ComponentFixture<NewTransactionComponent>;
@@ -42,8 +43,6 @@ describe('NewTransactionComponent', () => {
     fixture = TestBed.createComponent(NewTransactionComponent);
     component = fixture.componentInstance;
 
-    component.category.set(1);
-    component.budget.set(1);
 
     fixture.detectChanges();
   });
@@ -51,12 +50,18 @@ describe('NewTransactionComponent', () => {
   it('should POST transaction, show success toast, refresh and emit event', () => {
     const refreshSpy = vi.spyOn(component.transactionRefresher, 'emit');
 
-    component.amount.set(250);
-    component.reference.set('Netflix');
-    component.description.set('Monthly Subscription');
-    component.occurredAt.set(new Date('2026-01-01'));
-
     const form = {
+      form: {
+        value: {
+          account: 1,
+          amount: 300,
+          reference: 'ref',
+          occurredAt: '2024-01-01',
+          description: 'desc',
+          category: '1',
+          budget: '1'
+        }
+      },
       resetForm: vi.fn(),
     } as any;
 

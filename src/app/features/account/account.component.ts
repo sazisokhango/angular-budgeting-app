@@ -2,7 +2,7 @@ import { AccountRequestModel } from '@/app/core/models';
 import { AccountStore } from '@/app/core/store';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ButtonComponent } from "@/app/shared";
 import { FormDirective } from '@/app/shared/directives/form';
 import { ToastService } from '@/app/shared/toast.service';
@@ -17,7 +17,6 @@ export class AccountAccount {
   private readonly toastService = inject(ToastService);
   private readonly store = inject(AccountStore);
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
 
   protected readonly formValue = signal<any>({});
 

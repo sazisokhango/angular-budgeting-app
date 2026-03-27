@@ -14,6 +14,7 @@ export class AuthStore {
   private readonly router = inject(Router);
   public readonly token = signal<String | null>(localStorage.getItem('token'));
   public readonly user = signal<UserResponseModel>(this.initializeUser());
+  
   public readonly isAuthenticated = computed(() => {
     return this.token() !== null;
   });
@@ -35,7 +36,7 @@ export class AuthStore {
   private initializeUser(): UserResponseModel {
     return {
       avatar: '',
-      emai: '',
+      email: '',
       id: '',
       name: '',
       token: '',
