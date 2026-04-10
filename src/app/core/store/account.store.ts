@@ -19,6 +19,8 @@ export class AccountStore {
       catchError((error) => {
         if (error.status !== 403) {
           this.toastService.add('Error getting all accounts', 'error', 3000);
+        } else {
+          localStorage.removeItem('token');
         }
         return throwError(() => error);
       })

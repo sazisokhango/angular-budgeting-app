@@ -6,9 +6,10 @@
   (ngSubmit)="onLoginUser(form)"
 >
   <div class="flex flex-col gap-1">
-    <label class="text-sm font-medium text-gray-700">Email</label>
+    <label for="email" class="text-sm font-medium text-gray-700">Email</label>
     <input
       name="email"
+      id="email"
       [ngModel]="formValue()?.email"
       type="text"
       required
@@ -20,8 +21,9 @@
   }
 
   <div class="flex flex-col gap-1">
-    <label class="text-sm font-medium text-gray-700">Password</label>
+    <label for="password" class="text-sm font-medium text-gray-700">Password</label>
     <input
+      id="password"
       name="password"
       [ngModel]="formValue()?.password"
       type="password"
@@ -34,6 +36,7 @@
   }
   <app-button
     buttonType="success"
+    buttonId="login"
     [isDisabled]="form.invalid!"
     [isLoading]="isLoading()"
     label="Submit"
