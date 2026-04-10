@@ -1,0 +1,52 @@
+import {
+  AccountService,
+  ToastService
+} from "/chunk-QTMW5NXC.js";
+
+// src/app/core/store/account.store.ts
+import { inject, Injectable } from "/@fs/home/saziso/Desktop/budgeting-app/.angular/cache/21.2.7/budgeting-app/vite/deps/@angular_core.js?v=9b4fc92a";
+import { BehaviorSubject, catchError, of, switchMap, throwError } from "/@fs/home/saziso/Desktop/budgeting-app/.angular/cache/21.2.7/budgeting-app/vite/deps/rxjs.js?v=9b4fc92a";
+import { toSignal } from "/@fs/home/saziso/Desktop/budgeting-app/.angular/cache/21.2.7/budgeting-app/vite/deps/@angular_core_rxjs-interop.js?v=9b4fc92a";
+import * as i0 from "/@fs/home/saziso/Desktop/budgeting-app/.angular/cache/21.2.7/budgeting-app/vite/deps/@angular_core.js?v=9b4fc92a";
+var AccountStore = class _AccountStore {
+  service = inject(AccountService);
+  toastService = inject(ToastService);
+  reload$ = new BehaviorSubject(void 0);
+  accounts$ = this.reload$.pipe(switchMap(() => this.service.getAllAccounts().pipe(catchError((error) => {
+    if (error.status !== 403) {
+      this.toastService.add("Error getting all accounts", "error", 3e3);
+    } else {
+      localStorage.removeItem("token");
+    }
+    return throwError(() => error);
+  }))));
+  accounts = toSignal(this.accounts$, { initialValue: [] });
+  reloadAccounts() {
+    this.reload$.next();
+  }
+  createAccount(request) {
+    return this.service.createAccount(request).pipe(catchError((error) => {
+      this.toastService.add("Error creating accounts", "error", 3e3);
+      return of([]);
+    }));
+  }
+  static \u0275fac = function AccountStore_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _AccountStore)();
+  };
+  static \u0275prov = /* @__PURE__ */ i0.\u0275\u0275defineInjectable({ token: _AccountStore, factory: _AccountStore.\u0275fac, providedIn: "root" });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && i0.\u0275setClassMetadata(AccountStore, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], null, null);
+})();
+
+export {
+  AccountStore
+};
+
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29yZS9zdG9yZS9hY2NvdW50LnN0b3JlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGluamVjdCwgSW5qZWN0YWJsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgQWNjb3VudFNlcnZpY2UgfSBmcm9tICcuLi9TZXJ2aWNlcyc7XG5pbXBvcnQgeyBBY2NvdW50UmVxdWVzdE1vZGVsIH0gZnJvbSAnLi4vbW9kZWxzJztcbmltcG9ydCB7IEJlaGF2aW9yU3ViamVjdCwgY2F0Y2hFcnJvciwgb2YsIHN3aXRjaE1hcCwgdGhyb3dFcnJvciB9IGZyb20gJ3J4anMnO1xuaW1wb3J0IHsgVG9hc3RTZXJ2aWNlIH0gZnJvbSAnQC9hcHAvc2hhcmVkL3RvYXN0LnNlcnZpY2UnO1xuaW1wb3J0IHsgcnhSZXNvdXJjZSwgdG9TaWduYWwgfSBmcm9tICdAYW5ndWxhci9jb3JlL3J4anMtaW50ZXJvcCc7XG5cbkBJbmplY3RhYmxlKHtcbiAgcHJvdmlkZWRJbjogJ3Jvb3QnLFxufSlcbmV4cG9ydCBjbGFzcyBBY2NvdW50U3RvcmUge1xuICBwcml2YXRlIHJlYWRvbmx5IHNlcnZpY2UgPSBpbmplY3QoQWNjb3VudFNlcnZpY2UpO1xuICBwcml2YXRlIHJlYWRvbmx5IHRvYXN0U2VydmljZSA9IGluamVjdChUb2FzdFNlcnZpY2UpO1xuXG4gIHByaXZhdGUgcmVhZG9ubHkgcmVsb2FkJCA9IG5ldyBCZWhhdmlvclN1YmplY3Q8dm9pZD4odW5kZWZpbmVkKTtcblxuICBwcml2YXRlIHJlYWRvbmx5IGFjY291bnRzJCA9IHRoaXMucmVsb2FkJC5waXBlKFxuICAgIHN3aXRjaE1hcCgoKSA9PiB0aGlzLnNlcnZpY2UuZ2V0QWxsQWNjb3VudHMoKS5waXBlKFxuICAgICAgY2F0Y2hFcnJvcigoZXJyb3IpID0+IHtcbiAgICAgICAgaWYgKGVycm9yLnN0YXR1cyAhPT0gNDAzKSB7XG4gICAgICAgICAgdGhpcy50b2FzdFNlcnZpY2UuYWRkKCdFcnJvciBnZXR0aW5nIGFsbCBhY2NvdW50cycsICdlcnJvcicsIDMwMDApO1xuICAgICAgICB9IGVsc2Uge1xuICAgICAgICAgIGxvY2FsU3RvcmFnZS5yZW1vdmVJdGVtKCd0b2tlbicpO1xuICAgICAgICB9XG4gICAgICAgIHJldHVybiB0aHJvd0Vycm9yKCgpID0+IGVycm9yKTtcbiAgICAgIH0pXG4gICAgKSlcbiAgKVxuXG4gIHB1YmxpYyByZWFkb25seSBhY2NvdW50cyA9IHRvU2lnbmFsKHRoaXMuYWNjb3VudHMkLCB7aW5pdGlhbFZhbHVlOiBbXX0pXG5cbiAgcmVsb2FkQWNjb3VudHMoKSB7XG4gICAgdGhpcy5yZWxvYWQkLm5leHQoKTtcbiAgfVxuXG4gIGNyZWF0ZUFjY291bnQocmVxdWVzdDogUmVhZG9ubHk8QWNjb3VudFJlcXVlc3RNb2RlbD4pIHtcbiAgICByZXR1cm4gdGhpcy5zZXJ2aWNlLmNyZWF0ZUFjY291bnQocmVxdWVzdCkucGlwZShcbiAgICAgIGNhdGNoRXJyb3IoKGVycm9yKSA9PiB7XG4gICAgICAgIHRoaXMudG9hc3RTZXJ2aWNlLmFkZCgnRXJyb3IgY3JlYXRpbmcgYWNjb3VudHMnLCAnZXJyb3InLCAzMDAwKTtcbiAgICAgICAgcmV0dXJuIG9mKFtdKTtcbiAgICAgIH0pXG4gICAgKTtcbiAgfVxufVxuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7QUFBQSxTQUFTLFFBQVEsa0JBQWtCO0FBR25DLFNBQVMsaUJBQWlCLFlBQVksSUFBSSxXQUFXLGtCQUFrQjtBQUV2RSxTQUFxQixnQkFBZ0I7O0FBSy9CLElBQU8sZUFBUCxNQUFPLGNBQVk7RUFDTixVQUFVLE9BQU8sY0FBYztFQUMvQixlQUFlLE9BQU8sWUFBWTtFQUVsQyxVQUFVLElBQUksZ0JBQXNCLE1BQVM7RUFFN0MsWUFBWSxLQUFLLFFBQVEsS0FDeEMsVUFBVSxNQUFNLEtBQUssUUFBUSxlQUFjLEVBQUcsS0FDNUMsV0FBVyxDQUFDLFVBQVM7QUFDbkIsUUFBSSxNQUFNLFdBQVcsS0FBSztBQUN4QixXQUFLLGFBQWEsSUFBSSw4QkFBOEIsU0FBUyxHQUFJO0lBQ25FLE9BQU87QUFDTCxtQkFBYSxXQUFXLE9BQU87SUFDakM7QUFDQSxXQUFPLFdBQVcsTUFBTSxLQUFLO0VBQy9CLENBQUMsQ0FBQyxDQUNILENBQUM7RUFHWSxXQUFXLFNBQVMsS0FBSyxXQUFXLEVBQUMsY0FBYyxDQUFBLEVBQUUsQ0FBQztFQUV0RSxpQkFBYztBQUNaLFNBQUssUUFBUSxLQUFJO0VBQ25CO0VBRUEsY0FBYyxTQUFzQztBQUNsRCxXQUFPLEtBQUssUUFBUSxjQUFjLE9BQU8sRUFBRSxLQUN6QyxXQUFXLENBQUMsVUFBUztBQUNuQixXQUFLLGFBQWEsSUFBSSwyQkFBMkIsU0FBUyxHQUFJO0FBQzlELGFBQU8sR0FBRyxDQUFBLENBQUU7SUFDZCxDQUFDLENBQUM7RUFFTjs7cUNBaENXLGVBQVk7RUFBQTsrRUFBWixlQUFZLFNBQVosY0FBWSxXQUFBLFlBRlgsT0FBTSxDQUFBOzs7K0VBRVAsY0FBWSxDQUFBO1VBSHhCO1dBQVc7TUFDVixZQUFZO0tBQ2I7OzsiLCJuYW1lcyI6W119
