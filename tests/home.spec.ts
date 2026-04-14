@@ -11,10 +11,10 @@ test.describe('Home page - unauthenticated user', () => {
 test.describe('Home Page - authenticated', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/home');
-  }); 
+  });
 
-  test('display the welcome message', async ({ page }) => {
-    await page.goto('/home')
+  test('Display the welcome message', async ({ page }) => {
+    await page.goto('/home');
     const header = page.getByRole('heading', { name: 'Welcome to the Budgeting app' });
     await expect(header).toBeVisible();
   });
