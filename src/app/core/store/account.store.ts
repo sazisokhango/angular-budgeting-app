@@ -20,7 +20,7 @@ export class AccountStore {
         if (error.status !== 403) {
           this.toastService.add('Error getting all accounts', 'error', 3000);
         }
-        return throwError(() => error);
+        return of([])
       })
     ))
   )
