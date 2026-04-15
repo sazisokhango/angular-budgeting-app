@@ -8,6 +8,7 @@ import { Component, computed, input, output } from '@angular/core';
 })
 export class ButtonComponent {
   readonly label = input.required<string>();
+  readonly buttonId = input<string>();
   readonly buttonType = input.required<'success' | 'info' | 'danger'>();
   readonly isLoading = input<boolean>(false);
   readonly isDisabled = input<boolean>(false);
