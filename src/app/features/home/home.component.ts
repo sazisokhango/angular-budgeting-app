@@ -1,11 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { TransactionTableComponent } from '@/app/features/transactions';
-import { AccountResponseModel, SpendByCategoryModel, TransactionModel } from '@/app/core/models';
+import { SpendByCategoryModel, TransactionModel } from '@/app/core/models';
 import { ChartComponent } from '@/app/shared';
 import { TransactionStore } from '../transactions/store/transaction.store';
 import { SpendByMonthModel } from '@/app/core/models/spendByMonth.model';
 import { AccountStore, AuthStore } from '@/app/core/store';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -20,7 +19,6 @@ export class HomeComponent {
   protected readonly store = inject(TransactionStore);
   protected readonly authStore = inject(AuthStore);
 
-
   protected readonly transactionList = computed<TransactionModel[]>(
     () => this.store.transactionsByAccount.value() ?? []
   );
@@ -33,6 +31,9 @@ export class HomeComponent {
     return this.store.monthlySummary.value() ?? [];
   });
 
+  constructor() {
+    this.accountStore.reloadAccounts();    
+  }
   protected get sortedList() {
     return this.transactionList()
       .sort((a, b) => {
@@ -42,7 +43,11 @@ export class HomeComponent {
   }
 
   protected readonly spendByCategoryLabels = computed(() => {
-    return this.store.dashboardSummary.value()?.spendByCategory.map((l: SpendByCategoryModel) => l.name) ?? [];
+    return (
+      this.store.dashboardSummary
+        .value()
+        ?.spendByCategory.map((l: SpendByCategoryModel) => l.name) ?? []
+    );
   });
 
   protected readonly incomeVsExpenseLabels = computed(() => {
@@ -50,7 +55,11 @@ export class HomeComponent {
   });
 
   protected readonly spendByCategoryValues = computed(() => {
-    return this.store.dashboardSummary.value()?.spendByCategory.map((v: SpendByCategoryModel) => v.total) ?? [];
+    return (
+      this.store.dashboardSummary
+        .value()
+        ?.spendByCategory.map((v: SpendByCategoryModel) => v.total) ?? []
+    );
   });
 
   get incomeVsExpenseChartData() {

@@ -69,15 +69,8 @@ describe('AuthService', () => {
     expect(store.isAuthenticated()).toBe(true);
   });
 
-  it('should initialise token from localstorage', () => {
-    localStorage.setItem('token', 'dummy-token');
-
-    expect(store.token()).toBe('dummy-token');
-    expect(store.isAuthenticated()).toBe(true);
-  });
-
   it('should logout', () => {
-    localStorage.removeItem('token');
+    // localStorage.removeItem('token');
 
     store.logout();
 

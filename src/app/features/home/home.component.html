@@ -70,6 +70,8 @@
   }
 </div>
 
+} @else if (!isAccountSelected()) {
+  <p class="pt-8">Please select Account</p>  
 } @else if (authStore.isAuthenticated() && transactionList().length === 0) {
 <p class="pt-8">Transactions are not available</p>
 }
