@@ -16,7 +16,7 @@ export class LoginComponent {
   protected readonly isLoading = signal(false);
   protected readonly formValue = signal<any>({});
   protected readonly store = inject(AuthStore);
-  private readonly accountStore = inject(AccountStore)
+  private readonly accountStore = inject(AccountStore);
   protected readonly route = inject(Router);
   protected readonly toastService = inject(ToastService);
 
@@ -25,7 +25,7 @@ export class LoginComponent {
       if (this.store.isAuthenticated()) {
         this.accountStore.reloadAccounts();
       }
-    })
+    });
   }
 
   onLoginUser(form: NgForm) {
@@ -41,7 +41,10 @@ export class LoginComponent {
         localStorage.setItem('token', data.token);
         this.route.navigate(['/home']);
       },
-      complete: () => this.isLoading.set(false)
+      error: (error) => {
+        this.isLoading.set(false)
+      },
+      complete: () => this.isLoading.set(false),
     });
   }
 }
