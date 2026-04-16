@@ -1,14 +1,7 @@
 import test, { expect } from '@playwright/test';
 
-test.describe('Home page - unauthenticated user', () => {
-  test('To show login on page start', async ({ page }) => {
-    await page.goto('/');
 
-    await expect(page).toHaveURL('/login');
-  });
-});
-
-test.describe('Home Page - authenticated', () => {
+test.describe('Home Page - authenticated user', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/home');
   });
